@@ -2,12 +2,29 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1c2833;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Color Palette from Documentation */
+  --color-red: #C0392B;
+  --color-dark-red: #922B21;
+  --color-light-red: #FADBD8;
+  --color-blue: #1A5276;
+  --color-light-blue: #D6EAF8;
+  --color-green: #1E8449;
+  --color-light-green: #D5F5E3;
+  --color-orange: #D35400;
+  --color-light-orange: #FDEBD0;
+  --color-purple: #6C3483;
+  --color-light-purple: #E8DAEF;
+  --color-gray: #F2F3F4;
+  --color-dark-gray: #717D7E;
+  --color-black: #1C2833;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
