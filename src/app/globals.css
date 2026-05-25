@@ -30,8 +30,8 @@
   --color-light-orange: #FDEBD0;
   --color-purple: #6C3483;
   --color-light-purple: #E8DAEF;
-  --color-gray: #F2F3F4;
-  --color-dark-gray: #717D7E;
+  --color-brand-gray: #F2F3F4;
+  --color-brand-dark-gray: #717D7E;
   --color-black: #111827;
 
   --font-sans: var(--font-geist-sans);
