@@ -80,11 +80,8 @@ export default function Footer() {
 
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-1 mb-4">
-              <Image src="/logo.png" alt="Chrona" width={32} height={32} className="object-contain" />
-              <span className="text-white text-lg font-extrabold tracking-tighter" style={{ fontFamily: "'Georgia', serif" }}>
-                chrona
-              </span>
+            <div className="flex items-center mb-4">
+              <Image src="/logo-dark.png" alt="Chrona" width={122} height={75} className="object-contain" />
             </div>
             <p className="text-gray-400 text-xs leading-relaxed mb-5">
               Your premium destination for fashion, electronics, cosmetics, groceries and more. Shop smart, live better.
