@@ -5,7 +5,7 @@ export default function Logo() {
   return (
     <Link href="/" className="flex items-center shrink-0">
       <Image 
-        src="/logo-dark.png" 
+        src="/logo.png" 
         alt="Chrona Logo" 
         width={97} 
         height={60} 
