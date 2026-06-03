@@ -2,13 +2,18 @@
 
 import Link from 'next/link';
 import { MapPin, Search, ChevronDown, User, RefreshCcw, ShoppingCart } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCartStore } from '@/store/useCartStore';
 
 export default function Header() {
   const { isAuthenticated, user } = useAuthStore();
-  const cartItemsCount = useCartStore((state) => state.getTotalItems());
-
+  const cartItemsCount = useCartStore((state) => state.getTotalItems ? state.getTotalItems() : 0);
+  const pathname = usePathname();
+  if (pathname === '/login' || pathname === '/register') {
+    return null;
+  }
   return (
     <header className="w-full bg-background border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -47,14 +52,12 @@ export default function Header() {
 
           {/* Auth State */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-2 cursor-pointer group relative">
-              <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+            <div className="flex items-center gap-2 cursor-pointer group justify-center overflow-hidden border border-gray-300">
                 {user?.avatar ? (
-                  <img src={user.avatar} alt={user.name || 'User'} className="w-full h-full object-cover" />
+                  <Image src={user.avatar} alt={user.name || 'User'} width={40} height={40} className="w-full h-full object-cover rounded-full" />
                 ) : (
                   <User className="w-5 h-5 text-gray-500" />
                 )}
-              </div>
               <div className="hidden lg:flex flex-col">
                 <span className="text-xs font-bold text-gray-800">{user?.name || 'My Account'}</span>
               </div>

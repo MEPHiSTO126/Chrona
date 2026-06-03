@@ -1,38 +1,85 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAFAFA;
-  --foreground: #111827;
+  /* Raw Palette Colors */
+  --raw-black: #000000;
+  --raw-red: #EF0606;
+  --raw-swirl: #D3CCC7;
+  --raw-off-white: #EFEEE8;
+
+  /* Theme Core Variables */
+  --background: var(--raw-off-white);
+  --foreground: var(--raw-black);
+
+  /* Semantic Helper Tokens */
+  --text-primary: var(--raw-black);
+  --text-secondary: #5A5552; /* Dark warm gray from Swirl */
+  --text-muted: #8E8681; /* Medium warm gray from Swirl */
+
+  --btn-primary-bg: var(--raw-red);
+  --btn-primary-bg-hover: #C40505;
+  --btn-primary-text: #FFFFFF;
+
+  --btn-secondary-bg: var(--raw-swirl);
+  --btn-secondary-bg-hover: #BFB7B1;
+  --btn-secondary-text: var(--raw-black);
+
+  --border-subtle: var(--raw-swirl);
+  --border-strong: #8E8681;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
-  /* Primary Brand Colors (Teal Blue from Logo) */
-  --color-primary: #1B6B93;
-  --color-primary-dark: #145374;
-  --color-primary-light: #D6EAF8;
+  /* Primary Brand Colors (Red Palette) */
+  --color-primary: var(--raw-red);
+  --color-primary-dark: #C40505;
+  --color-primary-light: #FDE6E6;
 
   /* Accent Colors */
-  --color-accent: #E67E22;
-  --color-accent-dark: #D35400;
+  --color-accent: var(--raw-red);
+  --color-accent-dark: #C40505;
 
-  /* Utility Colors */
-  --color-red: #E63946;
-  --color-dark-red: #D90429;
-  --color-light-red: #FADBD8;
-  --color-blue: #1A5276;
-  --color-light-blue: #D6EAF8;
-  --color-green: #1E8449;
-  --color-light-green: #D5F5E3;
-  --color-orange: #D35400;
-  --color-light-orange: #FDEBD0;
-  --color-purple: #6C3483;
-  --color-light-purple: #E8DAEF;
-  --color-brand-gray: #F2F3F4;
-  --color-brand-dark-gray: #717D7E;
-  --color-black: #111827;
+  /* Palette names */
+  --color-brand-black: var(--raw-black);
+  --color-brand-red: var(--raw-red);
+  --color-brand-swirl: var(--raw-swirl);
+  --color-brand-off-white: var(--raw-off-white);
+
+  /* Helper semantic tokens */
+  --color-btn-bg: var(--btn-primary-bg);
+  --color-btn-bg-hover: var(--btn-primary-bg-hover);
+  --color-btn-text: var(--btn-primary-text);
+
+  --color-btn-sec-bg: var(--btn-secondary-bg);
+  --color-btn-sec-bg-hover: var(--btn-secondary-bg-hover);
+  --color-btn-sec-text: var(--btn-secondary-text);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  /* Overriding utility colors to match design */
+  --color-red: var(--raw-red);
+  --color-dark-red: #C40505;
+  --color-light-red: #FDE6E6;
+  --color-brand-gray: var(--raw-swirl);
+  --color-brand-dark-gray: #5A5552;
+  --color-black: var(--raw-black);
+
+  /* Adapting other colors for harmony */
+  --color-blue: #1C3D5A;
+  --color-light-blue: #EBF8FF;
+  --color-green: #276749;
+  --color-light-green: #E6FFFA;
+  --color-orange: #C05621;
+  --color-light-orange: #FFFAF0;
+  --color-purple: #553C9A;
+  --color-light-purple: #FAF5FF;
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
