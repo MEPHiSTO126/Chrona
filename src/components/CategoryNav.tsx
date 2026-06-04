@@ -1,5 +1,8 @@
+"use client";
+
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const CATEGORIES = [
   { name: 'Man', href: '/category/man' },
@@ -10,6 +13,11 @@ const CATEGORIES = [
 ];
 
 export default function CategoryNav() {
+  const pathname = usePathname();
+    if (pathname === '/login' || pathname === '/register') {
+      return null;
+    }
+
   return (
     <nav className="w-full bg-background border-b border-gray-200 hidden md:block">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

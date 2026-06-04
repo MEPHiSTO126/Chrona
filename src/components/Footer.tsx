@@ -1,6 +1,7 @@
 "use client";
 import Link from 'next/link';
 import Image from 'next/image';
+import Logo from './Logo';
 import { usePathname } from 'next/navigation';
 
 const TwitterIcon = ({ className }: { className?: string }) => (
@@ -83,14 +84,14 @@ export default function Footer() {
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center mb-4">
-              <Image src="/logo-dark.png" alt="Chrona" width={122} height={75} className="object-contain" />
+              <Logo size={92} variant="dark-bg" />
             </div>
             <p className="text-gray-400 text-xs leading-relaxed mb-5">
-              Your premium destination for fashion, electronics, cosmetics, groceries and more. Shop smart, live better.
+              Your premium destination for fashion, electronics, cosmetics,
+              groceries and more. Shop smart, live better.
             </p>
             <div className="flex items-center gap-3">
               {SOCIAL_ICONS.map(({ icon: Icon, href, label }) => (
@@ -116,14 +117,30 @@ export default function Footer() {
 
           {/* Download App Column */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4">Download App</h3>
-            <p className="text-gray-400 text-xs mb-3">Save $3 with App New User Only</p>
+            <h3 className="text-white font-semibold text-sm mb-4">
+              Download App
+            </h3>
+            <p className="text-gray-400 text-xs mb-3">
+              Save $3 with App New User Only
+            </p>
             <div className="flex flex-col gap-2 mb-4">
               <a href="#" className="block hover:opacity-80 transition-opacity">
-                <Image src="/google-play-badge.svg" alt="Get it on Google Play" width={140} height={42} className="rounded" />
+                <Image
+                  src="/google-play-badge.svg"
+                  alt="Get it on Google Play"
+                  width={140}
+                  height={42}
+                  className="rounded"
+                />
               </a>
               <a href="#" className="block hover:opacity-80 transition-opacity">
-                <Image src="/app-store-badge.svg" alt="Download on the App Store" width={140} height={42} className="rounded" />
+                <Image
+                  src="/app-store-badge.svg"
+                  alt="Download on the App Store"
+                  width={140}
+                  height={42}
+                  className="rounded"
+                />
               </a>
             </div>
           </div>
@@ -138,11 +155,33 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <span>©2026 dheos.com</span>
           <div className="flex flex-wrap items-center gap-4 md:gap-6">
-            <Link href="/seller-registration" className="hover:text-white transition-colors">Seller Registration</Link>
-            <Link href="/advertise" className="hover:text-white transition-colors">Advertise with us</Link>
-            <Link href="/affiliate" className="hover:text-white transition-colors">Become an Affiliate</Link>
-            <Link href="/support" className="hover:text-white transition-colors">Support Center</Link>
-            <span className="font-bold text-white text-base tracking-wider">VISA</span>
+            <Link
+              href="/seller-registration"
+              className="hover:text-white transition-colors"
+            >
+              Seller Registration
+            </Link>
+            <Link
+              href="/advertise"
+              className="hover:text-white transition-colors"
+            >
+              Advertise with us
+            </Link>
+            <Link
+              href="/affiliate"
+              className="hover:text-white transition-colors"
+            >
+              Become an Affiliate
+            </Link>
+            <Link
+              href="/support"
+              className="hover:text-white transition-colors"
+            >
+              Support Center
+            </Link>
+            <span className="font-bold text-white text-base tracking-wider">
+              VISA
+            </span>
           </div>
         </div>
       </div>

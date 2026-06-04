@@ -1,16 +1,27 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Logo() {
+interface LogoProps {
+  size: number;
+  variant: 'light-bg' | 'dark-bg';
+}
+
+export default function Logo({ size = 32, variant }: LogoProps) {
+  const src = variant === "light-bg" ? "/chrona-red.svg" : "/chrona-white.svg";
+
   return (
     <Link href="/" className="flex items-center shrink-0">
       <Image 
-        src="/logo.png" 
+        src={src}
         alt="Chrona Logo" 
-        width={97} 
-        height={60} 
+        width={290} 
+        height={64} 
         className="object-contain"
         priority
+        style={{
+          width: `${size}px`,
+          height: "auto",
+        }}
       />
     </Link>
   );
