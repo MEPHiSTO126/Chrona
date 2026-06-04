@@ -6,7 +6,7 @@ export default function TopBar() {
     <div className="w-full bg-primary text-white text-xs sm:text-sm font-medium py-2">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo on the left */}
-        <Logo />
+        <Logo size={84} />
 
         {/* Links on the right */}
         <div className="flex items-center gap-6">

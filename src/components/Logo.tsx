@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Logo() {
+export default function Logo({ size = 32 }: {size: number}) {
   return (
     <Link href="/" className="flex items-center shrink-0">
       <Image 
@@ -11,6 +11,10 @@ export default function Logo() {
         height={60} 
         className="object-contain"
         priority
+        style={{
+          width: `${size}px`,
+          height: `${size}px`,
+        }}
       />
     </Link>
   );
