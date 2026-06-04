@@ -29,7 +29,7 @@ export const AuthShell = ({
       <div className="grid place-items-center m-8">
         <div className="grid grid-cols-1 w-[85%] md:w-[70%] max-w-100 min-w-50">
           <div className="flex flex-col items-center text-center">
-            <Logo size={148} />
+            <Logo size={172} variant="light-bg" />
             <h1 className="mt-10 mb-2 text-3xl">{title}</h1>
             <p className="mb-6 text-base">{desc}</p>
           </div>
@@ -37,7 +37,10 @@ export const AuthShell = ({
           <div className="h-[0.5px] w-full bg-primary my-6" />
           <p className="text-sm text-center">
             {footer}{" "}
-            <Link href={linkSrc} className="text-primary font-medium hover:underline">
+            <Link
+              href={linkSrc}
+              className="text-primary font-medium hover:underline"
+            >
               {link}
             </Link>
           </p>
