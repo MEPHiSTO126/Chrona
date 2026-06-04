@@ -22,15 +22,8 @@ export default function CountdownTimer({
     seconds: 0,
     isExpired: false,
   });
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-
     const calculateTime = () => {
       const difference = +new Date(targetDate) - +new Date();
       
@@ -53,13 +46,9 @@ export default function CountdownTimer({
 
     const interval = setInterval(calculateTime, 1000);
     return () => clearInterval(interval);
-  }, [targetDate, isMounted, onExpire]);
+  }, [targetDate, onExpire]);
 
-  if (!isMounted) {
-    return (
-      <div className={`animate-pulse bg-gray-200/50 rounded-lg h-9 w-32 ${className}`} />
-    );
-  }
+
 
   if (timeLeft.isExpired) {
     return (
@@ -98,28 +87,26 @@ export default function CountdownTimer({
   // Premium design (default)
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <div className="flex items-center gap-1 bg-light-orange/20 border border-accent/20 rounded-lg px-2.5 py-1 shadow-[0_2px_10px_rgba(230,126,34,0.05)]">
-        <Flame className="w-4 h-4 text-accent fill-accent animate-bounce mr-1.5" />
-        <span className="text-[10px] text-accent-dark font-black uppercase tracking-wider hidden sm:inline mr-1">Flash Ends In</span>
-        
-        <div className="flex items-center gap-1 text-accent-dark font-extrabold text-sm tabular-nums">
-          <div className="flex flex-col items-center">
-            <span className="bg-white border border-light-orange rounded px-1.5 py-0.5 min-w-[26px] text-center shadow-sm">
-              {formatNumber(timeLeft.hours)}
-            </span>
-          </div>
-          <span className="animate-pulse text-accent/50 font-bold">:</span>
-          <div className="flex flex-col items-center">
-            <span className="bg-white border border-light-orange rounded px-1.5 py-0.5 min-w-[26px] text-center shadow-sm">
-              {formatNumber(timeLeft.minutes)}
-            </span>
-          </div>
-          <span className="animate-pulse text-accent/50 font-bold">:</span>
-          <div className="flex flex-col items-center">
-            <span className="bg-white border border-light-orange rounded px-1.5 py-0.5 min-w-[26px] text-center shadow-sm">
-              {formatNumber(timeLeft.seconds)}
-            </span>
-          </div>
+      <div className="flex items-center gap-1.5 text-foreground font-extrabold text-sm tabular-nums">
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="bg-white border border-gray-200 rounded px-2 py-1 min-w-[32px] text-center shadow-sm text-base font-bold">
+            {formatNumber(timeLeft.hours)}
+          </span>
+          <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wide">hour</span>
+        </div>
+        <span className="text-gray-300 font-bold text-base mb-3">:</span>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="bg-white border border-gray-200 rounded px-2 py-1 min-w-[32px] text-center shadow-sm text-base font-bold">
+            {formatNumber(timeLeft.minutes)}
+          </span>
+          <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wide">min</span>
+        </div>
+        <span className="text-gray-300 font-bold text-base mb-3">:</span>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="bg-white border border-gray-200 rounded px-2 py-1 min-w-[32px] text-center shadow-sm text-base font-bold">
+            {formatNumber(timeLeft.seconds)}
+          </span>
+          <span className="text-[9px] text-gray-400 font-medium uppercase tracking-wide">sec</span>
         </div>
       </div>
     </div>
