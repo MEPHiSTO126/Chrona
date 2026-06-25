@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
 
-interface ProductCardProps {
+export interface ProductCardProps {
   id: string;
   name: string;
   description?: string;
