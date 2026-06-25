@@ -6,7 +6,7 @@
 :root {
   /* Raw Palette Colors */
   --raw-black: #000000;
-  --raw-red: #EF0606;
+  --raw-orange: #EA580C;
   --raw-swirl: #D3CCC7;
   --raw-off-white: #EFEEE8;
 
@@ -19,8 +19,8 @@
   --text-secondary: #5A5552; /* Dark warm gray from Swirl */
   --text-muted: #8E8681; /* Medium warm gray from Swirl */
 
-  --btn-primary-bg: var(--raw-red);
-  --btn-primary-bg-hover: #C40505;
+  --btn-primary-bg: var(--raw-orange);
+  --btn-primary-bg-hover: #C2410C;
   --btn-primary-text: #FFFFFF;
 
   --btn-secondary-bg: var(--raw-swirl);
@@ -40,18 +40,18 @@
   --color-primary-dark: #145374;
   --color-primary-light: #D6EAF8;
   
-  /* Primary Brand Colors (Red Palette) */
-  --color-primary: var(--raw-red);
-  --color-primary-dark: #C40505;
-  --color-primary-light: #FDE6E6;
+  /* Primary Brand Colors (Orange Palette) */
+  --color-primary: var(--raw-orange);
+  --color-primary-dark: #C2410C;
+  --color-primary-light: #FFEDD5;
 
   /* Accent Colors */
-  --color-accent: var(--raw-red);
-  --color-accent-dark: #C40505;
+  --color-accent: var(--raw-orange);
+  --color-accent-dark: #C2410C;
 
   /* Palette names */
   --color-brand-black: var(--raw-black);
-  --color-brand-red: var(--raw-red);
+  --color-brand-orange: var(--raw-orange);
   --color-brand-swirl: var(--raw-swirl);
   --color-brand-off-white: var(--raw-off-white);
 
@@ -72,9 +72,9 @@
   --color-border-strong: var(--border-strong);
 
   /* Overriding utility colors to match design */
-  --color-red: var(--raw-red);
-  --color-dark-red: #C40505;
-  --color-light-red: #FDE6E6;
+  --color-brand-orange: var(--raw-orange);
+  --color-dark-orange: #C2410C;
+  --color-light-orange: #FFEDD5;
   --color-brand-gray: var(--raw-swirl);
   --color-brand-dark-gray: #5A5552;
   --color-black: var(--raw-black);
@@ -84,8 +84,8 @@
   --color-light-blue: #EBF8FF;
   --color-green: #276749;
   --color-light-green: #E6FFFA;
-  --color-orange: #C05621;
-  --color-light-orange: #FFFAF0;
+  --color-red: #C53030;
+  --color-light-red: #FFF5F5;
   --color-purple: #553C9A;
   --color-light-purple: #FAF5FF;
 
