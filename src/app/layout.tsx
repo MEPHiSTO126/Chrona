@@ -5,6 +5,7 @@ import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import CategoryNav from "@/components/CategoryNav";
 import Footer from "@/components/Footer";
+import MobileNav from "@/components/MobileNav";
 import TranslationProvider from "@/components/TranslationProvider";
 
 const urbanist = Urbanist({
@@ -42,8 +43,9 @@ export default function RootLayout({
           <TopBar />
           <Header />
           <CategoryNav />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 pb-16 md:pb-0">{children}</main>
           <Footer />
+          <MobileNav />
         </TranslationProvider>
       </body>
     </html>

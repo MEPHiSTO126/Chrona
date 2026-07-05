@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin, Search, ChevronDown, User, RefreshCcw, ShoppingCart, X, Navigation, Menu } from 'lucide-react';
+import { MapPin, Search, ChevronDown, User, RefreshCcw, ShoppingCart, X, Navigation } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Logo from './Logo';
@@ -29,16 +29,13 @@ export default function Header() {
 
   const langDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Sync search state with URL
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const q = params.get('q') || '';
-      setSearchQuery(q);
+      setSearchQuery(params.get('q') || '');
     }
   }, [pathname]);
 
-  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
@@ -53,33 +50,23 @@ export default function Header() {
 
   const handleLocationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (tempLocation.trim()) {
-      setLocation(tempLocation.trim());
-      setIsLocationModalOpen(false);
-    }
+    if (tempLocation.trim()) { setLocation(tempLocation.trim()); setIsLocationModalOpen(false); }
   };
 
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
     const trimmed = val.trim();
     if (trimmed) {
-      if (pathname !== '/search') {
-        router.push(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
-      } else {
-        router.replace(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
-      }
-    } else {
-      if (pathname === '/search') {
-        router.replace('/search', { scroll: false });
-      }
+      pathname !== '/search'
+        ? router.push(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false })
+        : router.replace(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
+    } else if (pathname === '/search') {
+      router.replace('/search', { scroll: false });
     }
   };
 
   const detectLocation = () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not supported by your browser.');
-      return;
-    }
+    if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
     setIsDetecting(true);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -91,26 +78,17 @@ export default function Header() {
           );
           if (response.ok) {
             const data = await response.json();
-            const address = data.address;
-            const city = address.city || address.town || address.village || address.suburb || address.state || 'Detected City';
-            const postcode = address.postcode || '';
-            const formatted = `${city} ${postcode}`.trim();
-            setLocation(formatted);
-            setTempLocation(formatted);
+            const addr = data.address;
+            const city = addr.city || addr.town || addr.village || addr.suburb || addr.state || 'City';
+            const formatted = `${city} ${addr.postcode || ''}`.trim();
+            setLocation(formatted); setTempLocation(formatted);
           } else throw new Error('Failed');
         } catch {
-          const fallback = `Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)}`;
-          setLocation(fallback);
-          setTempLocation(fallback);
-        } finally {
-          setIsDetecting(false);
-          setIsLocationModalOpen(false);
-        }
+          const fb = `Lat: ${latitude.toFixed(2)}, Lon: ${longitude.toFixed(2)}`;
+          setLocation(fb); setTempLocation(fb);
+        } finally { setIsDetecting(false); setIsLocationModalOpen(false); }
       },
-      () => {
-        setIsDetecting(false);
-        alert('Could not auto-detect location. Please type it in manually.');
-      },
+      () => { setIsDetecting(false); alert('Could not auto-detect location. Please type it in manually.'); },
       { timeout: 10000 }
     );
   };
@@ -119,14 +97,15 @@ export default function Header() {
 
   return (
     <header className="w-full bg-background border-b border-gray-200 relative z-40">
+      {/* ── Main Row ───────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3">
 
-        {/* Mobile Logo (only visible on mobile) */}
+        {/* Mobile Logo */}
         <div className="flex sm:hidden shrink-0">
           <Logo size={72} variant="light-bg" />
         </div>
 
-        {/* Location Selector — desktop only */}
+        {/* Location — desktop */}
         <div
           onClick={() => { setTempLocation(location); setIsLocationModalOpen(true); }}
           className="hidden md:flex items-center gap-2 cursor-pointer group shrink-0"
@@ -134,37 +113,28 @@ export default function Header() {
           <MapPin className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
           <div className="flex flex-col text-left">
             <span className="text-[10px] text-gray-500 font-medium">{t("Delivered To")}</span>
-            <span className="text-xs font-bold whitespace-nowrap overflow-hidden text-ellipsis max-w-[110px]">
-              {location}
-            </span>
+            <span className="text-xs font-bold whitespace-nowrap overflow-hidden text-ellipsis max-w-[110px]">{location}</span>
           </div>
         </div>
 
-        {/* Desktop Search Bar */}
+        {/* Desktop Search */}
         <div className="hidden md:flex flex-1 max-w-xl relative">
           <form onSubmit={(e) => e.preventDefault()} className="flex w-full border border-gray-300 rounded-md overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all">
             <div className="bg-primary text-white px-4 flex items-center justify-center">
               <Search className="w-4 h-4" />
             </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder={t("Search Saree, Kurti and etc.")}
-              className="flex-1 px-3 py-2 outline-none text-sm bg-transparent"
-            />
+            <input type="text" value={searchQuery} onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder={t("Search Saree, Kurti and etc.")} className="flex-1 px-3 py-2 outline-none text-sm bg-transparent" />
           </form>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-3 sm:gap-5">
 
-          {/* Language Selector — desktop only */}
+          {/* Language — desktop */}
           <div className="relative hidden lg:block" ref={langDropdownRef}>
-            <div
-              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-              className="flex items-center gap-1 cursor-pointer bg-gray-100 px-2.5 py-1.5 rounded-md hover:bg-gray-200 transition-colors select-none"
-            >
+            <div onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              className="flex items-center gap-1 cursor-pointer bg-gray-100 px-2.5 py-1.5 rounded-md hover:bg-gray-200 transition-colors select-none">
               <span className="text-sm font-medium">{currentLang.flag} {currentLang.code}</span>
               <ChevronDown className={`w-3.5 h-3.5 text-gray-500 transition-transform duration-200 ${isLangDropdownOpen ? 'rotate-180' : ''}`} />
             </div>
@@ -173,11 +143,8 @@ export default function Header() {
                 <div className="px-3 py-1.5 text-xs font-semibold text-gray-400 border-b border-gray-100">Select Language</div>
                 <div className="max-h-60 overflow-y-auto">
                   {LANGUAGES.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => { setLanguage(lang.code); setIsLangDropdownOpen(false); }}
-                      className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${language === lang.code ? 'bg-primary/5 text-primary font-semibold' : 'text-gray-700'}`}
-                    >
+                    <button key={lang.code} onClick={() => { setLanguage(lang.code); setIsLangDropdownOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-2 text-sm text-left hover:bg-gray-50 transition-colors ${language === lang.code ? 'bg-primary/5 text-primary font-semibold' : 'text-gray-700'}`}>
                       <span className="text-base">{lang.flag}</span>
                       <span className="flex-1">{lang.name}</span>
                       <span className="text-xs text-gray-400 font-medium">{lang.code}</span>
@@ -188,32 +155,27 @@ export default function Header() {
             )}
           </div>
 
-          {/* Auth */}
+          {/* Auth — desktop */}
           {isAuthenticated ? (
             <div className="hidden sm:flex items-center gap-2 cursor-pointer border border-gray-300 p-1 rounded-md">
-              {user?.avatar ? (
-                <Image src={user.avatar} alt={user.name || 'User'} width={28} height={28} className="w-7 h-7 object-cover rounded-full" />
-              ) : (
-                <User className="w-4 h-4 text-gray-500" />
-              )}
+              {user?.avatar
+                ? <Image src={user.avatar} alt={user.name || 'User'} width={28} height={28} className="w-7 h-7 object-cover rounded-full" />
+                : <User className="w-4 h-4 text-gray-500" />}
               <span className="text-xs font-bold text-gray-800 hidden lg:block">{user?.name || t("My Account")}</span>
             </div>
           ) : (
-            <Link
-              href="/login"
-              className="hidden sm:block bg-primary text-white text-xs font-bold px-4 py-2 rounded-md hover:bg-primary-dark transition-colors shadow-sm whitespace-nowrap"
-            >
+            <Link href="/login" className="hidden sm:block bg-primary text-white text-xs font-bold px-4 py-2 rounded-md hover:bg-primary-dark transition-colors shadow-sm whitespace-nowrap">
               {t("Login")}
             </Link>
           )}
 
-          {/* Return — desktop only */}
+          {/* Return — desktop */}
           <Link href="/returns" className="hidden sm:flex flex-col items-center gap-0.5 hover:text-primary text-gray-700 transition-colors">
             <RefreshCcw className="w-5 h-5" />
             <span className="text-[9px] font-medium">{t("Return")}</span>
           </Link>
 
-          {/* Cart */}
+          {/* Cart — always visible */}
           <Link href="/cart" className="relative flex flex-col items-center gap-0.5 hover:text-primary text-gray-700 transition-colors">
             <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
             <span className="text-[9px] font-medium hidden sm:block">{t("Cart")}</span>
@@ -224,7 +186,7 @@ export default function Header() {
             )}
           </Link>
 
-          {/* Mobile Login Icon */}
+          {/* Mobile Login icon */}
           {!isAuthenticated && (
             <Link href="/login" className="flex sm:hidden items-center justify-center text-gray-700">
               <User className="w-5 h-5" />
@@ -233,39 +195,47 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Search Bar */}
-      <div className="md:hidden px-4 pb-3 w-full">
+      {/* ── Mobile Info Bar: Location + Login CTA ─────────────────── */}
+      <div className="md:hidden px-4 py-1.5 flex items-center justify-between gap-3 border-t border-gray-100 bg-gray-50/60">
+        <button
+          onClick={() => { setTempLocation(location); setIsLocationModalOpen(true); }}
+          className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-primary transition-colors min-w-0"
+        >
+          <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
+          <span className="truncate max-w-[140px] font-medium">{location}</span>
+        </button>
+        {!isAuthenticated && (
+          <Link href="/login" className="shrink-0 text-xs font-bold text-primary border border-primary px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-all">
+            {t("Login")} / {t("Sign Up")}
+          </Link>
+        )}
+        {isAuthenticated && user && (
+          <span className="shrink-0 text-xs font-bold text-gray-700 truncate max-w-[100px]">👋 {user.name?.split(' ')[0]}</span>
+        )}
+      </div>
+
+      {/* ── Mobile Search Bar ──────────────────────────────────────── */}
+      <div className="md:hidden px-4 pb-3 pt-1.5 w-full">
         <form onSubmit={(e) => e.preventDefault()} className="flex w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
           <div className="bg-primary text-white px-3.5 flex items-center justify-center">
             <Search className="w-4 h-4" />
           </div>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder={t("Search products...")}
-            className="flex-1 px-3 py-2.5 outline-none text-sm bg-transparent"
-          />
+          <input type="text" value={searchQuery} onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder={t("Search products...")} className="flex-1 px-3 py-2.5 outline-none text-sm bg-transparent" />
         </form>
       </div>
 
-      {/* Location Modal */}
+      {/* ── Location Modal ─────────────────────────────────────────── */}
       {isLocationModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
           <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md overflow-hidden shadow-2xl">
             <div className="bg-primary text-white px-6 py-4 flex items-center justify-between">
               <h3 className="font-bold text-lg">{t("Shipping Address")}</h3>
-              <button onClick={() => setIsLocationModalOpen(false)} className="text-white/80 hover:text-white">
-                <X className="w-6 h-6" />
-              </button>
+              <button onClick={() => setIsLocationModalOpen(false)} className="text-white/80 hover:text-white"><X className="w-6 h-6" /></button>
             </div>
             <div className="p-6 space-y-5">
-              <button
-                type="button"
-                onClick={detectLocation}
-                disabled={isDetecting}
-                className="w-full flex items-center justify-center gap-2 border-2 border-primary text-primary hover:bg-primary/5 py-3 rounded-xl font-bold text-sm disabled:opacity-50"
-              >
+              <button type="button" onClick={detectLocation} disabled={isDetecting}
+                className="w-full flex items-center justify-center gap-2 border-2 border-primary text-primary hover:bg-primary/5 py-3 rounded-xl font-bold text-sm disabled:opacity-50">
                 <Navigation className={`w-4 h-4 ${isDetecting ? 'animate-spin' : ''}`} />
                 {isDetecting ? t("Saving...") : t("Detect My Location")}
               </button>
@@ -276,25 +246,14 @@ export default function Header() {
               </div>
               <form onSubmit={handleLocationSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">
-                    {t("City")}, {t("State")} {t("Or")} {t("Postal Code")}
-                  </label>
-                  <input
-                    type="text"
-                    value={tempLocation}
-                    onChange={(e) => setTempLocation(e.target.value)}
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-2">{t("City")}, {t("State")} {t("Or")} {t("Postal Code")}</label>
+                  <input type="text" value={tempLocation} onChange={(e) => setTempLocation(e.target.value)}
                     placeholder="e.g. Lagos 100001"
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm font-medium"
-                    required
-                  />
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-primary text-sm font-medium" required />
                 </div>
                 <div className="flex justify-end gap-3">
-                  <button type="button" onClick={() => setIsLocationModalOpen(false)} className="px-4 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">
-                    Cancel
-                  </button>
-                  <button type="submit" className="px-6 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary-dark rounded-xl transition-colors">
-                    {t("Save & Continue")}
-                  </button>
+                  <button type="button" onClick={() => setIsLocationModalOpen(false)} className="px-4 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50 rounded-xl transition-colors">Cancel</button>
+                  <button type="submit" className="px-6 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary-dark rounded-xl transition-colors">{t("Save & Continue")}</button>
                 </div>
               </form>
             </div>
