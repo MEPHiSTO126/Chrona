@@ -171,7 +171,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
   const totalReviewsCount = product.ratingBreakdown.reduce((total, b) => total + b.count, 0);
 
   return (
-    <div className="bg-white min-h-screen pb-20 font-urbanist text-gray-800">
+    <div className="bg-white min-h-screen pb-24 lg:pb-20 font-urbanist text-gray-800">
       {/* Top Navbar details/breadcrumbs */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100 flex items-center justify-between text-sm text-gray-500">
         <div className="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap">
@@ -187,11 +187,11 @@ export default function ProductDetailsPage({ params }: PageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
           {/* LEFT COLUMN: Gallery & Core Actions */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
+          <div className="lg:col-span-5 flex flex-col gap-4 sm:gap-6">
             <ProductImageGallery images={product.images} />
-            
-            {/* Action Buttons */}
-            <div className="grid grid-cols-2 gap-4 mt-2">
+
+            {/* Action Buttons — hidden on mobile (shown in sticky bar below) */}
+            <div className="hidden lg:grid grid-cols-2 gap-4 mt-2">
               <button
                 onClick={handleAddToCart}
                 className={`py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-2.5 transition-all text-base shadow-sm border border-[#E0A96D] cursor-pointer ${
@@ -239,7 +239,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
             </div>
 
             {/* Technical Quick Info */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-3 border-y border-gray-100 text-xs sm:text-sm text-gray-600">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 py-3 border-y border-gray-100 text-xs sm:text-sm text-gray-600">
               <div>
                 <span className="block text-gray-400 font-medium">{t("Category")}</span>
                 <span className="font-semibold text-gray-900">{t(getProductCategory(product.id))}</span>
@@ -301,7 +301,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
             {/* Delivery/Pincode check */}
             <div className="flex flex-col gap-3 p-4 border border-gray-100 rounded-2xl bg-gray-50/20">
               <span className="text-sm font-bold text-gray-900">{t("Delivery")}</span>
-              <form onSubmit={handlePincodeCheck} className="flex gap-2 max-w-sm">
+              <form onSubmit={handlePincodeCheck} className="flex gap-2 w-full">
                 <div className="relative flex-1">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
@@ -315,7 +315,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
                 </div>
                 <button
                   type="submit"
-                  className="bg-[#B00020] hover:bg-[#900010] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm shadow-[#B00020]/10"
+                  className="bg-[#B00020] hover:bg-[#900010] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm"
                 >
                   {t("CHECK")}
                 </button>
@@ -431,6 +431,30 @@ export default function ProductDetailsPage({ params }: PageProps) {
           </div>
         </section>
 
+      </div>
+
+      {/* Sticky Bottom CTA Bar — mobile only */}
+      <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white border-t border-gray-200 px-4 py-3 z-30 shadow-lg">
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={handleAddToCart}
+            className={`py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all text-sm cursor-pointer border ${
+              addedToCart
+                ? 'bg-green-600 text-white border-green-600'
+                : 'bg-[#F5A623] hover:bg-[#E5951F] text-white border-[#E0A96D]'
+            }`}
+          >
+            <ShoppingCart className="w-4 h-4" />
+            {addedToCart ? t('Added!') : t('ADD TO CART')}
+          </button>
+          <button
+            onClick={handleBuyNow}
+            className="py-3 rounded-xl font-bold flex items-center justify-center gap-2 bg-[#B00020] hover:bg-[#900010] text-white transition-all text-sm cursor-pointer"
+          >
+            <Zap className="w-4 h-4" />
+            {t("BUY NOW")}
+          </button>
+        </div>
       </div>
     </div>
   );
