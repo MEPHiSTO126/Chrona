@@ -9,7 +9,6 @@ import { useCartStore } from '@/store/useCartStore';
 import { useLocaleStore, LANGUAGES } from '@/store/useLocaleStore';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useState, useRef, useEffect } from 'react';
-import { allMockProducts, getProductCategory } from '@/lib/mockData';
 
 export default function Header() {
   const router = useRouter();
@@ -27,25 +26,22 @@ export default function Header() {
   const [isDetecting, setIsDetecting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Suggestions states
-  const [suggestions, setSuggestions] = useState<any[]>([]);
-  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
-
   const langDropdownRef = useRef<HTMLDivElement>(null);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
-  const searchContainerRefMobile = useRef<HTMLDivElement>(null);
+
+  // Synchronize local searchQuery state with URL query parameter when navigating
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q') || '';
+      setSearchQuery(q);
+    }
+  }, [pathname]);
 
   // Close dropdowns on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
         setIsLangDropdownOpen(false);
-      }
-      if (
-        searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node) &&
-        searchContainerRefMobile.current && !searchContainerRefMobile.current.contains(event.target as Node)
-      ) {
-        setIsSuggestionsOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -65,21 +61,14 @@ export default function Header() {
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
     
-    if (val.trim()) {
-      const filtered = allMockProducts.filter((p) =>
-        p.name.toLowerCase().includes(val.toLowerCase()) ||
-        (p.description && p.description.toLowerCase().includes(val.toLowerCase()))
-      );
-      setSuggestions(filtered.slice(0, 6)); // Top 6 matching products
-      setIsSuggestionsOpen(true);
-
-      // If user is currently on the search page, update the URL query parameter in real-time
-      if (pathname === '/search') {
-        router.replace(`/search?q=${encodeURIComponent(val.trim())}`, { scroll: false });
+    const trimmed = val.trim();
+    if (trimmed) {
+      if (pathname !== '/search') {
+        router.push(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
+      } else {
+        router.replace(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
       }
     } else {
-      setSuggestions([]);
-      setIsSuggestionsOpen(false);
       if (pathname === '/search') {
         router.replace('/search', { scroll: false });
       }
@@ -135,74 +124,6 @@ export default function Header() {
     );
   };
 
-  const renderSuggestionsDropdown = () => {
-    if (!isSuggestionsOpen || suggestions.length === 0) return null;
-    return (
-      <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-gray-200 rounded-lg shadow-xl py-2 z-50 max-h-96 overflow-y-auto w-full">
-        <div className="px-4 py-1 text-[10px] font-bold text-gray-400 border-b border-gray-100 uppercase tracking-wider mb-2">
-          {t("Products")}
-        </div>
-        <div className="flex flex-col">
-          {suggestions.map((product) => {
-            const hasDiscount = product.discountedPrice !== undefined && product.discountedPrice < product.price;
-            return (
-              <Link
-                key={product.id}
-                href={`/product/${product.id}`}
-                onClick={() => {
-                  setIsSuggestionsOpen(false);
-                  setSearchQuery('');
-                }}
-                className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0"
-              >
-                <div className="relative w-10 h-10 rounded bg-gray-50 overflow-hidden shrink-0 flex items-center justify-center p-1 border border-gray-100">
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                    width={32}
-                    height={32}
-                    className="object-contain w-full h-full"
-                  />
-                </div>
-                <div className="flex-1 min-w-0 text-left">
-                  <h4 className="text-xs font-bold text-gray-900 truncate hover:text-primary transition-colors">
-                    {t(product.name)}
-                  </h4>
-                  <span className="text-[10px] text-gray-400 font-semibold">
-                    {t(getProductCategory(product.id))}
-                  </span>
-                </div>
-                <div className="text-right shrink-0 flex flex-col items-end">
-                  <span className="text-xs font-bold text-gray-900">
-                    ₹{(hasDiscount ? product.discountedPrice : product.price).toLocaleString('en-IN')}
-                  </span>
-                  {hasDiscount && (
-                    <span className="text-[9px] text-gray-400 line-through">
-                      ₹{product.price.toLocaleString('en-IN')}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-        <div className="px-4 pt-2 mt-1 border-t border-gray-100 text-center">
-          <Link
-            href={`/search?q=${encodeURIComponent(searchQuery)}`}
-            onClick={() => setIsSuggestionsOpen(false)}
-            className="text-xs font-bold text-primary hover:text-primary-dark transition-colors inline-block"
-          >
-            {t("View All Results")} →
-          </Link>
-        </div>
-      </div>
-    );
-  };
-
-  if (pathname === '/login' || pathname === '/register') {
-    return null;
-  }
-
   return (
     <header className="w-full bg-background border-b border-gray-200 relative z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -225,34 +146,22 @@ export default function Header() {
         </div>
 
         {/* Search Bar */}
-        <div className="hidden flex-1 md:flex max-w-xl relative" ref={searchContainerRef}>
+        <div className="hidden flex-1 md:flex max-w-xl relative">
           <form 
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (searchQuery.trim()) {
-                router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-                setIsSuggestionsOpen(false);
-              }
-            }}
+            onSubmit={(e) => e.preventDefault()}
             className="flex w-full border border-gray-300 rounded-md overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all"
           >
-            <button type="submit" className="bg-primary text-white px-5 flex items-center justify-center hover:bg-primary-dark transition-colors">
+            <div className="bg-primary text-white px-5 flex items-center justify-center">
               <Search className="w-5 h-5" />
-            </button>
+            </div>
             <input 
               type="text" 
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              onFocus={() => {
-                if (searchQuery.trim()) {
-                  setIsSuggestionsOpen(true);
-                }
-              }}
               placeholder={t("Search Saree, Kurti and etc.")} 
               className="flex-1 px-4 py-2 outline-none text-sm bg-transparent"
             />
           </form>
-          {renderSuggestionsDropdown()}
         </div>
 
         {/* Actions */}
@@ -338,34 +247,22 @@ export default function Header() {
       </div>
       
       {/* Mobile Search */}
-      <div className="md:hidden px-4 pb-4 w-full relative" ref={searchContainerRefMobile}>
+      <div className="md:hidden px-4 pb-4 w-full relative">
         <form 
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (searchQuery.trim()) {
-              router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-              setIsSuggestionsOpen(false);
-            }
-          }}
+          onSubmit={(e) => e.preventDefault()}
           className="flex w-full border border-gray-300 rounded-md overflow-hidden"
         >
-          <button type="submit" className="bg-primary text-white px-4 flex items-center justify-center">
+          <div className="bg-primary text-white px-4 flex items-center justify-center">
             <Search className="w-5 h-5" />
-          </button>
+          </div>
           <input 
             type="text" 
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            onFocus={() => {
-              if (searchQuery.trim()) {
-                setIsSuggestionsOpen(true);
-              }
-            }}
             placeholder={t("Search Saree, Kurti and etc.")} 
             className="flex-1 px-4 py-2 outline-none text-sm bg-transparent"
           />
         </form>
-        {renderSuggestionsDropdown()}
       </div>
 
       {/* Location Selector Modal */}

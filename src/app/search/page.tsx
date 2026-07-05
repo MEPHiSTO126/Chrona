@@ -33,9 +33,16 @@ export default function SearchPage({
       {results.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {results.map((product, index) => (
-            <ProductCard key={`${product.id}-${index}`} {...product} />
+            <div 
+              key={`${product.id}-${index}-${query}`} 
+              className="animate-fade-in-up"
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <ProductCard {...product} />
+            </div>
           ))}
         </div>
+
       ) : (
         <div className="py-20 text-center">
           <p className="text-gray-500 text-lg">{t("No products found matching your search.")}</p>
