@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './Logo';
 import { usePathname } from 'next/navigation';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const TwitterIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}><path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.3 4.3 0 001.88-2.38 8.59 8.59 0 01-2.72 1.04 4.28 4.28 0 00-7.32 3.91A12.16 12.16 0 013.15 4.83a4.28 4.28 0 001.33 5.71 4.24 4.24 0 01-1.94-.54v.05a4.28 4.28 0 003.43 4.19 4.3 4.3 0 01-1.93.07 4.29 4.29 0 004 2.98A8.6 8.6 0 012 19.54a12.13 12.13 0 006.56 1.92c7.88 0 12.2-6.53 12.2-12.2l-.01-.56A8.72 8.72 0 0024 5.06a8.58 8.58 0 01-2.54.7z"/></svg>
@@ -58,14 +59,15 @@ const SOCIAL_ICONS = [
 ];
 
 function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+  const { t } = useTranslation();
   return (
     <div>
-      <h3 className="text-white font-semibold text-sm mb-4">{title}</h3>
+      <h3 className="text-white font-semibold text-sm mb-4">{t(title)}</h3>
       <ul className="space-y-2.5">
         {links.map((link) => (
           <li key={link.label}>
             <Link href={link.href} className="text-gray-400 text-xs hover:text-white transition-colors">
-              {link.label}
+              {t(link.label)}
             </Link>
           </li>
         ))}
@@ -76,6 +78,8 @@ function FooterColumn({ title, links }: { title: string; links: { label: string;
 
 export default function Footer() {
   const pathname = usePathname();
+  const { t } = useTranslation();
+
   if (pathname === '/login' || pathname === '/register') {
     return null;
   }
@@ -90,8 +94,7 @@ export default function Footer() {
               <Logo size={92} variant="dark-bg" />
             </div>
             <p className="text-gray-400 text-xs leading-relaxed mb-5">
-              Your premium destination for fashion, electronics, cosmetics,
-              groceries and more. Shop smart, live better.
+              {t("Your premium destination for fashion, electronics, cosmetics, groceries and more. Shop smart, live better.")}
             </p>
             <div className="flex items-center gap-3">
               {SOCIAL_ICONS.map(({ icon: Icon, href, label }) => (
@@ -118,10 +121,10 @@ export default function Footer() {
           {/* Download App Column */}
           <div>
             <h3 className="text-white font-semibold text-sm mb-4">
-              Download App
+              {t("Download App")}
             </h3>
             <p className="text-gray-400 text-xs mb-3">
-              Save $3 with App New User Only
+              {t("Save $3 with App New User Only")}
             </p>
             <div className="flex flex-col gap-2 mb-4">
               <a href="#" className="block hover:opacity-80 transition-opacity">
@@ -159,25 +162,25 @@ export default function Footer() {
               href="/seller-registration"
               className="hover:text-white transition-colors"
             >
-              Seller Registration
+              {t("Seller Registration")}
             </Link>
             <Link
               href="/advertise"
               className="hover:text-white transition-colors"
             >
-              Advertise with us
+              {t("Advertise with us")}
             </Link>
             <Link
               href="/affiliate"
               className="hover:text-white transition-colors"
             >
-              Become an Affiliate
+              {t("Become an Affiliate")}
             </Link>
             <Link
               href="/support"
               className="hover:text-white transition-colors"
             >
-              Support Center
+              {t("Support Center")}
             </Link>
             <span className="font-bold text-white text-base tracking-wider">
               VISA

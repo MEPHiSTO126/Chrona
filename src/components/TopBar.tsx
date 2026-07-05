@@ -2,9 +2,12 @@
 import { Headset } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function TopBar() {
   const pathname = usePathname();
+  const { t } = useTranslation();
+
   if (pathname === '/login' || pathname === '/register') {
     return null;
   }
@@ -20,12 +23,12 @@ export default function TopBar() {
             href="/seller-registration" 
             className="hover:text-white/80 transition-opacity hidden sm:block"
           >
-            Seller Registration
+            {t("Seller Registration")}
           </a>
           
           <div className="flex items-center gap-1.5 hover:text-white/80 transition-opacity cursor-pointer">
             <Headset className="w-4 h-4" />
-            <span>24X7 Customer Support</span>
+            <span>{t("24X7 Customer Support")}</span>
           </div>
         </div>
       </div>

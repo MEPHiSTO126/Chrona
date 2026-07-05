@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export interface ProductCardProps {
   id: string;
@@ -74,6 +75,7 @@ export default function ProductCard({
   showDealLabel = false,
   className = '',
 }: ProductCardProps) {
+  const { t } = useTranslation();
   const hasDiscount = discountedPrice !== undefined && discountedPrice < price;
   const discountPercent = hasDiscount
     ? Math.round(((price - discountedPrice) / price) * 100)
@@ -88,7 +90,7 @@ export default function ProductCard({
       {/* Deal Label + Countdown */}
       {showDealLabel && (
         <div className="flex items-center justify-between px-3 pt-3 pb-1">
-          <span className="text-primary text-xs font-semibold">Deal of the Day</span>
+          <span className="text-primary text-xs font-semibold">{t("Deal of the Day")}</span>
           {saleEndTime && (
             <CountdownTimer targetDate={saleEndTime} variant="premium" />
           )}
@@ -112,12 +114,12 @@ export default function ProductCard({
       <div className="px-3 pb-3 pt-2 flex flex-col gap-1.5 flex-1">
         <Link href={`/product/${id}`}>
           <h3 className="text-sm font-semibold text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">
-            {name}
+            {t(name)}
           </h3>
         </Link>
 
         {description && (
-          <p className="text-xs text-gray-400 line-clamp-1">{description}</p>
+          <p className="text-xs text-gray-400 line-clamp-1">{t(description)}</p>
         )}
 
         {/* Rating */}

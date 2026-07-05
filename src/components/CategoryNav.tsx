@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const CATEGORIES = [
   { name: 'Man', href: '/category/man' },
@@ -14,9 +15,11 @@ const CATEGORIES = [
 
 export default function CategoryNav() {
   const pathname = usePathname();
-    if (pathname === '/login' || pathname === '/register') {
-      return null;
-    }
+  const { t } = useTranslation();
+
+  if (pathname === '/login' || pathname === '/register') {
+    return null;
+  }
 
   return (
     <nav className="w-full bg-background border-b border-gray-200 hidden md:block">
@@ -28,7 +31,7 @@ export default function CategoryNav() {
                 href={cat.href} 
                 className="flex items-center gap-1 text-sm font-medium text-gray-700 hover:text-primary transition-colors group"
               >
-                {cat.name}
+                {t(cat.name)}
                 <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors" />
               </Link>
             </li>
