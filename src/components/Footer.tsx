@@ -86,64 +86,42 @@ export default function Footer() {
   return (
     <footer className="bg-[#0F1111] text-gray-300 mt-auto">
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-          {/* Brand Column */}
-          <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center mb-4">
-              <Logo size={92} variant="dark-bg" />
-            </div>
-            <p className="text-gray-400 text-xs leading-relaxed mb-5">
-              {t("Your premium destination for fashion, electronics, cosmetics, groceries and more. Shop smart, live better.")}
-            </p>
-            <div className="flex items-center gap-3">
-              {SOCIAL_ICONS.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors"
-                >
-                  <Icon className="w-4 h-4 text-gray-300" />
-                </a>
-              ))}
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        {/* Brand + Social — full width on mobile */}
+        <div className="mb-8 sm:mb-10">
+          <div className="flex items-center mb-3">
+            <Logo size={80} variant="dark-bg" />
           </div>
+          <p className="text-gray-400 text-xs leading-relaxed mb-4 max-w-xs">
+            {t("Your premium destination for fashion, electronics, cosmetics, groceries and more. Shop smart, live better.")}
+          </p>
+          <div className="flex items-center gap-3">
+            {SOCIAL_ICONS.map(({ icon: Icon, href, label }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+                className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+                <Icon className="w-4 h-4 text-gray-300" />
+              </a>
+            ))}
+          </div>
+        </div>
 
-          {/* Link Columns */}
+        {/* Link Columns — 2 columns on mobile, 4 on md+ */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 sm:gap-8">
           <FooterColumn title="About" links={ABOUT_LINKS} />
           <FooterColumn title="Help" links={HELP_LINKS} />
           <FooterColumn title="Policies" links={POLICY_LINKS} />
           <FooterColumn title="Quick Link" links={QUICK_LINKS} />
 
-          {/* Download App Column */}
-          <div>
-            <h3 className="text-white font-semibold text-sm mb-4">
-              {t("Download App")}
-            </h3>
-            <p className="text-gray-400 text-xs mb-3">
-              {t("Save $3 with App New User Only")}
-            </p>
-            <div className="flex flex-col gap-2 mb-4">
+          {/* Download App */}
+          <div className="col-span-2 md:col-span-1">
+            <h3 className="text-white font-semibold text-sm mb-3">{t("Download App")}</h3>
+            <p className="text-gray-400 text-xs mb-3">{t("Save $3 with App New User Only")}</p>
+            <div className="flex flex-row md:flex-col gap-2">
               <a href="#" className="block hover:opacity-80 transition-opacity">
-                <Image
-                  src="/google-play-badge.svg"
-                  alt="Get it on Google Play"
-                  width={140}
-                  height={42}
-                  className="rounded w-full max-w-[130px]"
-                />
+                <Image src="/google-play-badge.svg" alt="Get it on Google Play" width={130} height={40} className="rounded w-full max-w-[130px]" />
               </a>
               <a href="#" className="block hover:opacity-80 transition-opacity">
-                <Image
-                  src="/app-store-badge.svg"
-                  alt="Download on the App Store"
-                  width={140}
-                  height={42}
-                  className="rounded w-full max-w-[130px]"
-                />
+                <Image src="/app-store-badge.svg" alt="Download on the App Store" width={130} height={40} className="rounded w-full max-w-[130px]" />
               </a>
             </div>
           </div>
