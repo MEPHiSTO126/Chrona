@@ -6,8 +6,13 @@ import { AuthInput } from "@/components/auth/AuthInput";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Login = () => {
+  const router = useRouter();
+  const login = useAuthStore((state) => state.login);
+  
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,7 +33,17 @@ const Login = () => {
       return;
     }
 
-    console.log(username, password);
+    // Mock Login Action
+    login({
+      id: "usr-1",
+      email: username.includes("@") ? username : "karan@example.com",
+      name: "Karan Singh Lalwai",
+      avatar: ""
+    }, "mock-token-jwt-12345");
+
+    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const redirect = params.get("redirect") || "/";
+    router.push(redirect);
   };
 
   return (

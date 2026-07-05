@@ -5,8 +5,13 @@ import { AuthShell } from "@/components/auth/AuthShell";
 import { AuthInput } from "@/components/auth/AuthInput";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Register = () => {
+  const router = useRouter();
+  const login = useAuthStore((state) => state.login);
+  
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,7 +22,27 @@ const Register = () => {
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(identifier, password, confirmPassword);
+    if (!identifier || (!identifier.includes("@") && isNaN(Number(identifier)))) {
+      return;
+    }
+    if (!password || password !== confirmPassword) {
+      return;
+    }
+    if (!acceptPolicies) {
+      return;
+    }
+
+    // Mock register & login
+    login({
+      id: "usr-1",
+      email: identifier.includes("@") ? identifier : "newuser@example.com",
+      name: "New Chrona User",
+      avatar: ""
+    }, "mock-token-jwt-12345");
+
+    const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    const redirect = params.get("redirect") || "/";
+    router.push(redirect);
   };
 
   return (

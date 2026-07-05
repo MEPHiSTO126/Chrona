@@ -80,7 +80,7 @@ export default function ProductCard({
     : 0;
 
   const formatPrice = (amount: number) => {
-    return `₦${amount.toLocaleString()}`;
+    return `₹${amount.toLocaleString('en-IN')}`;
   };
 
   return (

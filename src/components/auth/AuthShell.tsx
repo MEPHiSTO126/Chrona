@@ -22,11 +22,11 @@ export const AuthShell = ({
   link,
 }: AuthShellProps) => {
   return (
-    <div className="w-full min-h-screen grid grid-cols-1 md:grid-cols-2">
+    <div className="w-full h-screen grid grid-cols-1 md:grid-cols-2">
       <div className="relative hidden md:block bg-primary-light">
         <Image src={imgSrc} alt="" fill preload className="object-cover" />
       </div>
-      <div className="grid place-items-center m-8">
+      <div className="grid place-items-center overflow-y-auto p-8">
         <div className="grid grid-cols-1 w-[85%] md:w-[70%] max-w-100 min-w-50">
           <div className="flex flex-col items-center text-center">
             <Logo size={172} variant="light-bg" />

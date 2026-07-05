@@ -27,12 +27,14 @@ export const useAuthStore = create<AuthState>()(
         // (Zustand will persist the store state separately)
         if (typeof window !== 'undefined') {
           localStorage.setItem('access_token', token);
+          document.cookie = `access_token=${token}; path=/; max-age=86400; SameSite=Lax`;
         }
         set({ user, token, isAuthenticated: true });
       },
       logout: () => {
         if (typeof window !== 'undefined') {
           localStorage.removeItem('access_token');
+          document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
         }
         set({ user: null, token: null, isAuthenticated: false });
       },
