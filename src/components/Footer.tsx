@@ -133,7 +133,7 @@ export default function Footer() {
                   alt="Get it on Google Play"
                   width={140}
                   height={42}
-                  className="rounded"
+                  className="rounded w-full max-w-[130px]"
                 />
               </a>
               <a href="#" className="block hover:opacity-80 transition-opacity">
@@ -142,7 +142,7 @@ export default function Footer() {
                   alt="Download on the App Store"
                   width={140}
                   height={42}
-                  className="rounded"
+                  className="rounded w-full max-w-[130px]"
                 />
               </a>
             </div>
@@ -155,9 +155,9 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
           <span>©2026 dheos.com</span>
-          <div className="flex flex-wrap items-center gap-4 md:gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
             <Link
               href="/seller-registration"
               className="hover:text-white transition-colors"

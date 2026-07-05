@@ -231,4 +231,8 @@
 .animate-fade-in-up {
   animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
-}
+}
+
+/* Hide scrollbar for horizontal pill nav on mobile */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
