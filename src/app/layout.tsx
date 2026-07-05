@@ -20,6 +20,11 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "Chrona E-Commerce",
   description: "Premium full-stack e-commerce platform",
+  icons: {
+    icon: "/title-img.png?v=1",
+    shortcut: "/title-img.png?v=1",
+    apple: "/title-img.png?v=1",
+  },
 };
 
 export default function RootLayout({
