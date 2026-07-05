@@ -213,3 +213,112 @@ export const allMockProducts: ProductCardProps[] = [
 ];
 
 export const heroBannerImage = "/images/mock/hero_banner_ecommerce_1782386469847.png";
+
+export interface ProductReview {
+  id: string;
+  author: string;
+  avatar?: string;
+  rating: number;
+  title: string;
+  body: string;
+  date: string;
+  images?: string[];
+  helpful: number;
+}
+
+export interface ProductDetail {
+  id: string;
+  name: string;
+  brand: string;
+  company: string;
+  model: string;
+  dateOfManufacture: string;
+  images: string[];
+  price: number;
+  discountedPrice?: number;
+  rating: number;
+  reviewCount: number;
+  inStock: boolean;
+  colors: string[];
+  description: string;
+  highlightedTags: string[];
+  seller: {
+    name: string;
+    rating: number;
+    deliveryDays: number;
+    offer: string;
+  };
+  ratingBreakdown: { stars: number; count: number }[];
+  reviews: ProductReview[];
+}
+
+export const mockProductDetail: ProductDetail = {
+  id: "f1",
+  name: "Amazon Echo 2nd Gen — Powered by Dolby",
+  brand: "Amazon",
+  company: "Harborview Plushfisher",
+  model: "Echo 2nd Gen",
+  dateOfManufacture: "01.09.2024",
+  images: [
+    "/images/mock/electronics_gadget_1782386491755.png",
+    "/images/mock/electronics_gadget_1782386491755.png",
+    "/images/mock/electronics_gadget_1782386491755.png",
+    "/images/mock/electronics_gadget_1782386491755.png",
+  ],
+  price: 8499,
+  discountedPrice: 6499,
+  rating: 4.2,
+  reviewCount: 12000,
+  inStock: true,
+  colors: ["#1a1a1a", "#9ca3af", "#d1d5db"],
+  description:
+    "Echo connects to Alexa to play music, read the news, set alarms and timers, control smart home devices, and more. Ask Alexa to play your favourite song, artist, or genre from Amazon Music, Spotify, and more. Echo delivers 360° omnidirectional audio with Dolby processing to produce a detailed, dynamic sound with crisp highs, rich mids, and deep bass.",
+  highlightedTags: ["Wireless", "Dolby"],
+  seller: {
+    name: "The Better Store",
+    rating: 4.5,
+    deliveryDays: 3,
+    offer:
+      "100% manufacturer warranty on this brand. 1000+ transactions from this store.",
+  },
+  ratingBreakdown: [
+    { stars: 5, count: 6000 },
+    { stars: 4, count: 3000 },
+    { stars: 3, count: 1500 },
+    { stars: 2, count: 900 },
+    { stars: 1, count: 600 },
+  ],
+  reviews: [
+    {
+      id: "r1",
+      author: "Priyanka L.",
+      rating: 5,
+      title: "Awesome!",
+      body: "The sound quality is outstanding for the price. I've had it for a month and it still impresses me every day.",
+      date: "Reviewed on 19 May 2024",
+      images: [
+        "/images/mock/electronics_gadget_1782386491755.png",
+        "/images/mock/electronics_gadget_1782386491755.png",
+      ],
+      helpful: 24,
+    },
+    {
+      id: "r2",
+      author: "Rajesh M.",
+      rating: 4,
+      title: "Wonderful",
+      body: "Great speaker with clear sound. Setup was easy and Alexa responds quickly. Only minor complaint is the bass could be stronger.",
+      date: "Reviewed on 11 May 2024",
+      helpful: 12,
+    },
+    {
+      id: "r3",
+      author: "Joseph Lalit",
+      rating: 4,
+      title: "Wonderful",
+      body: "Solid build quality and the Dolby audio makes a real difference. Would recommend to anyone looking for a smart speaker.",
+      date: "Reviewed on 02 May 2024",
+      helpful: 8,
+    },
+  ],
+};
