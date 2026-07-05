@@ -322,3 +322,11 @@ export const mockProductDetail: ProductDetail = {
     },
   ],
 };
+
+export function getProductCategory(id: string): string {
+  if (id.startsWith('fa') || id === 'f2' || id === 't1') return 'Fashion';
+  if (id.startsWith('g') || id === 'f1' || id === 'f4' || id === 't2') return 'Electronics';
+  if (id.startsWith('a') || id === 'f3' || id === 't3') return 'Home Appliances';
+  return 'General';
+}
+

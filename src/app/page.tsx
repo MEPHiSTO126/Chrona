@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import ProductCard from "@/components/product/ProductCard";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   mockFlashSales,
   mockTrending,
@@ -11,6 +14,8 @@ import {
 } from "@/lib/mockData";
 
 export default function Home() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col min-h-screen pb-12 bg-gray-50/50">
       {/* Hero Banner Section */}
@@ -18,7 +23,7 @@ export default function Home() {
         <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-sm group">
           <Image
             src={heroBannerImage}
-            alt="Summer 2024 Collection"
+            alt={t("Summer 2024 Collection")}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"
             priority
@@ -26,16 +31,16 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent flex flex-col justify-center px-8 sm:px-16">
             <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 max-w-lg drop-shadow-md">
               Summer 2024 <br />
-              <span className="text-primary">New Collection</span>
+              <span className="text-primary">{t("New Collection")}</span>
             </h2>
             <p className="text-white/90 text-lg mb-8 max-w-md">
-              Discover the latest trends in fashion, electronics, and home essentials with vibrant aesthetics.
+              {t("Discover the latest trends in fashion, electronics, and home essentials with vibrant aesthetics.")}
             </p>
             <Link
               href="/category/fashion"
               className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-full w-max transition-colors shadow-lg shadow-primary/30"
             >
-              SHOP NOW
+              {t("SHOP NOW")}
             </Link>
           </div>
         </div>
@@ -47,13 +52,13 @@ export default function Home() {
         <section>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <h2 className="text-2xl font-bold text-gray-900">Flash Sales</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t("Flash Sales")}</h2>
               <span className="bg-red-100 text-red-600 text-xs font-bold px-2.5 py-1 rounded-full animate-pulse">
-                Ending Soon
+                {t("Ending Soon")}
               </span>
             </div>
             <Link href="/search?q=flash" className="text-primary hover:underline text-sm font-medium">
-              View All
+              {t("View All")}
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -66,7 +71,7 @@ export default function Home() {
         {/* Trending Must-Haves */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Trending Must-Haves</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t("Trending Must-Haves")}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {mockTrending.map((product) => (
@@ -80,16 +85,16 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-purple-900/40 z-0"></div>
           <div className="relative z-10">
             <span className="text-primary-light font-medium tracking-wider text-sm uppercase mb-2 block">
-              Enhance Your Audio
+              {t("Enhance Your Audio")}
             </span>
             <h2 className="text-3xl sm:text-5xl font-bold text-white mb-6">
-              JBL Music Experience
+              {t("JBL Music Experience")}
             </h2>
             <Link
               href="/category/electronics"
               className="bg-white hover:bg-gray-100 text-gray-900 font-bold py-2.5 px-6 rounded-full transition-colors"
             >
-              Buy Now
+              {t("Buy Now")}
             </Link>
           </div>
         </section>
@@ -97,7 +102,7 @@ export default function Home() {
         {/* Gadgets Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Gadgets Sell</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t("Gadgets Sell")}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {mockGadgets.map((product) => (
@@ -109,7 +114,7 @@ export default function Home() {
         {/* Home Appliances Section */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Home Appliances</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t("Home Appliances")}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {mockAppliances.map((product) => (
@@ -121,7 +126,7 @@ export default function Home() {
         {/* Top Fashion Deals */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Top Fashion Deals</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t("Top Fashion Deals")}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {mockFashion.map((product) => (

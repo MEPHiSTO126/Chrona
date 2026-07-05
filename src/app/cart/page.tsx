@@ -11,11 +11,11 @@ import {
   Trash2, 
   Heart, 
   ChevronDown, 
-  Tag, 
   ArrowRight,
   ShoppingBag
 } from 'lucide-react';
-import { useCartStore, CartItem } from '@/store/useCartStore';
+import { useCartStore } from '@/store/useCartStore';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function CartPage() {
   const router = useRouter();
@@ -24,12 +24,12 @@ export default function CartPage() {
   const [discount, setDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
+  const { t } = useTranslation();
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
     if (!couponCode) return;
     
-    // Mock coupons: "CHRONA20" for 20% off, "WELCOME500" for 500 flat off
     const code = couponCode.trim().toUpperCase();
     const subtotal = getSubtotal();
     
@@ -42,7 +42,7 @@ export default function CartPage() {
       setCouponApplied(true);
       setCouponError('');
     } else {
-      setCouponError('Invalid coupon code');
+      setCouponError(t('Invalid coupon code'));
       setCouponApplied(false);
       setDiscount(0);
     }
@@ -62,15 +62,15 @@ export default function CartPage() {
         <div className="bg-red-50 p-6 rounded-full text-[#B00020] mb-5">
           <ShoppingBag className="w-16 h-16" />
         </div>
-        <h1 className="text-2xl font-syne font-bold text-gray-900">Your Cart is Empty</h1>
+        <h1 className="text-2xl font-syne font-bold text-gray-900">{t("Your cart is empty")}</h1>
         <p className="text-gray-500 text-sm mt-2 mb-8 text-center max-w-sm font-medium">
-          Looks like you haven't added anything to your cart yet. Explore our latest arrivals!
+          {t("Looks like you haven't added anything to your cart yet. Explore our latest arrivals!")}
         </p>
         <Link 
           href="/" 
           className="bg-[#B00020] hover:bg-[#900010] text-white font-bold py-3 px-8 rounded-full shadow-md shadow-[#B00020]/15 transition-all flex items-center gap-2"
         >
-          Explore Collection
+          {t("Continue Shopping")}
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -94,7 +94,7 @@ export default function CartPage() {
               <div className="w-10 h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
                 <ShoppingCart className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">MY CART</span>
+              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">{t("Cart")}</span>
             </div>
 
             {/* Step 2: Address */}
@@ -102,7 +102,7 @@ export default function CartPage() {
               <div className="w-10 h-10 rounded-full bg-white text-gray-400 flex items-center justify-center border-4 border-gray-100 shadow-sm font-bold">
                 <MapPin className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">ADDRESS</span>
+              <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">{t("Shipping Address")}</span>
             </div>
 
             {/* Step 3: Payment */}
@@ -110,7 +110,7 @@ export default function CartPage() {
               <div className="w-10 h-10 rounded-full bg-white text-gray-400 flex items-center justify-center border-4 border-gray-100 shadow-sm font-bold">
                 <CreditCard className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">PAYMENT</span>
+              <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">{t("Payment Details")}</span>
             </div>
           </div>
         </div>
@@ -142,10 +142,14 @@ export default function CartPage() {
                   <div className="flex flex-col gap-1 pr-12">
                     <h3 className="text-sm sm:text-base font-bold text-gray-900 line-clamp-2 hover:text-primary transition-colors">
                       <Link href={`/product/${item.productId}`}>
-                        {item.name}
+                        {t(item.name)}
                       </Link>
                     </h3>
-                    <span className="text-xs text-gray-400 font-medium">Portable Wireless Speaker</span>
+                    {item.category && (
+                      <span className="text-xs text-gray-400 font-medium mt-0.5">
+                        {t(item.category)}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex flex-wrap items-center gap-4 mt-3 text-xs sm:text-sm font-bold">
@@ -157,7 +161,7 @@ export default function CartPage() {
                         className="appearance-none bg-gray-50 border border-gray-200 text-gray-800 font-bold px-3 py-1.5 pr-8 rounded-lg outline-none cursor-pointer focus:border-primary text-xs hover:bg-gray-100 transition-colors"
                       >
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                          <option key={num} value={num}>Qty {num}</option>
+                          <option key={num} value={num}>{t("Quantity")} {num}</option>
                         ))}
                       </select>
                       <ChevronDown className="w-3.5 h-3.5 text-gray-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -168,11 +172,7 @@ export default function CartPage() {
                       className="flex items-center gap-1 text-gray-400 hover:text-[#B00020] transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
-                      Delete
-                    </button>
-                    <button className="flex items-center gap-1 text-gray-400 hover:text-pink-500 transition-colors cursor-pointer">
-                      <Heart className="w-4 h-4" />
-                      Move to Wishlist
+                      {t("Remove")}
                     </button>
                   </div>
                 </div>
@@ -196,12 +196,12 @@ export default function CartPage() {
           <div className="lg:col-span-4 flex flex-col gap-5">
             <div className="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col gap-5 shadow-sm">
               <h2 className="text-sm font-bold tracking-wider text-gray-900 uppercase border-b border-gray-100 pb-3">
-                BILLING DETAILS
+                {t("Order Summary")}
               </h2>
 
               <div className="flex flex-col gap-3.5 text-sm font-medium text-gray-500">
                 <div className="flex justify-between">
-                  <span>Price Total ({items.reduce((acc, i) => acc + i.quantity, 0)} items)</span>
+                  <span>{t("Subtotal")} ({items.reduce((acc, i) => acc + i.quantity, 0)} {t("items")})</span>
                   <span className="text-gray-900 font-bold">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
@@ -209,12 +209,12 @@ export default function CartPage() {
                   <span className="text-gray-900 font-bold">{formatPrice(gst)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Shipping Charges</span>
-                  <span className="text-red-500 font-bold">Free</span>
+                  <span>{t("Shipping")}</span>
+                  <span className="text-red-500 font-bold">{t("Free")}</span>
                 </div>
                 {couponApplied && (
                   <div className="flex justify-between text-emerald-600 bg-emerald-50/50 p-2.5 rounded-lg border border-emerald-100 animate-in fade-in">
-                    <span>Coupon Applied ({couponCode.toUpperCase()})</span>
+                    <span>{t("Coupon Applied")} ({couponCode.toUpperCase()})</span>
                     <span className="font-bold">-{formatPrice(discount)}</span>
                   </div>
                 )}
@@ -222,14 +222,9 @@ export default function CartPage() {
                 <div className="h-px bg-gray-100 my-1"></div>
 
                 <div className="flex justify-between text-base font-bold text-gray-900">
-                  <span>TOTAL</span>
+                  <span>{t("Total")}</span>
                   <span>{formatPrice(total)}</span>
                 </div>
-              </div>
-
-              {/* Delivery ETA */}
-              <div className="text-xs font-semibold text-gray-400 text-center py-1">
-                Estimated Delivery by: <span className="text-gray-800 font-bold">12 Oct, 2026</span>
               </div>
 
               {/* Coupon Form */}
@@ -242,13 +237,13 @@ export default function CartPage() {
                       setCouponCode(e.target.value);
                       setCouponError('');
                     }}
-                    placeholder="Enter Coupon Code"
+                    placeholder={t("Enter Coupon Code")}
                     disabled={couponApplied}
                     className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-primary uppercase font-bold disabled:bg-gray-50 disabled:text-gray-400"
                   />
                   {couponApplied && (
                     <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-emerald-600">
-                      ✓ APPLIED
+                      ✓ {t("Applied")}
                     </span>
                   )}
                 </div>
@@ -257,7 +252,7 @@ export default function CartPage() {
                     type="submit"
                     className="bg-[#B00020]/5 hover:bg-[#B00020]/10 text-[#B00020] text-xs font-bold px-4 py-2.5 rounded-xl border border-dashed border-[#B00020] transition-all cursor-pointer"
                   >
-                    APPLY
+                    {t("APPLY")}
                   </button>
                 ) : (
                   <button
@@ -269,7 +264,7 @@ export default function CartPage() {
                     }}
                     className="bg-red-50 hover:bg-red-100 text-[#B00020] text-xs font-bold px-4 py-2.5 rounded-xl transition-all cursor-pointer"
                   >
-                    REMOVE
+                    {t("Remove")}
                   </button>
                 )}
               </form>
@@ -283,7 +278,7 @@ export default function CartPage() {
                 onClick={() => router.push('/checkout/address')}
                 className="w-full bg-[#B00020] hover:bg-[#900010] text-white font-bold py-4 rounded-xl shadow-md shadow-[#B00020]/15 transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
               >
-                Proceed to Checkout
+                {t("Proceed to Checkout")}
                 <ArrowRight className="w-4 h-4" />
               </button>
 

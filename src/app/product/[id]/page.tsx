@@ -21,8 +21,9 @@ import {
   ThumbsUp
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
-import { mockProductDetail, allMockProducts, ProductDetail } from '@/lib/mockData';
+import { mockProductDetail, allMockProducts, ProductDetail, getProductCategory } from '@/lib/mockData';
 import ProductImageGallery from '@/components/product/ProductImageGallery';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -31,6 +32,7 @@ interface PageProps {
 export default function ProductDetailsPage({ params }: PageProps) {
   const router = useRouter();
   const { id } = use(params);
+  const { t } = useTranslation();
   
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('');
@@ -45,14 +47,12 @@ export default function ProductDetailsPage({ params }: PageProps) {
   const addItem = useCartStore((state) => state.addItem);
 
   useEffect(() => {
-    // Determine the product to show
     if (id === 'f1') {
       setProduct(mockProductDetail);
       if (mockProductDetail.colors?.length > 0) {
         setSelectedColor(mockProductDetail.colors[0]);
       }
     } else {
-      // Find item in allMockProducts and wrap it in ProductDetail structure
       const baseProduct = allMockProducts.find((p) => p.id === id);
       if (baseProduct) {
         const detailProduct: ProductDetail = {
@@ -99,7 +99,6 @@ export default function ProductDetailsPage({ params }: PageProps) {
         setProduct(detailProduct);
         setSelectedColor(detailProduct.colors[0]);
       } else {
-        // Fallback to default mock
         setProduct(mockProductDetail);
         setSelectedColor(mockProductDetail.colors[0]);
       }
@@ -123,7 +122,8 @@ export default function ProductDetailsPage({ params }: PageProps) {
       price: product.price,
       discountedPrice: product.discountedPrice,
       quantity: quantity,
-      imageUrl: product.images[0]
+      imageUrl: product.images[0],
+      category: getProductCategory(product.id)
     });
     
     setAddedToCart(true);
@@ -139,7 +139,6 @@ export default function ProductDetailsPage({ params }: PageProps) {
     e.preventDefault();
     if (!pincode) return;
     setPincodeChecked(true);
-    // Simple mock pincode validation: valid if it is a 6-digit number
     const isValid = /^\d{6}$/.test(pincode);
     setPincodeSuccess(isValid);
   };
@@ -176,22 +175,11 @@ export default function ProductDetailsPage({ params }: PageProps) {
       {/* Top Navbar details/breadcrumbs */}
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100 flex items-center justify-between text-sm text-gray-500">
         <div className="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap">
-          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+          <Link href="/" className="hover:text-primary transition-colors">{t("Home")}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <Link href="/category/electronics" className="hover:text-primary transition-colors">Speaker</Link>
+          <Link href="/category/electronics" className="hover:text-primary transition-colors">{t("Electronics")}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-gray-900 font-medium truncate max-w-[200px] sm:max-w-none">{product.name}</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-gray-600">
-          <button className="flex items-center gap-1 hover:text-primary transition-colors">
-            <Share2 className="w-4 h-4" />
-            Share
-          </button>
-          <span className="text-gray-300">|</span>
-          <button className="flex items-center gap-1 hover:text-primary transition-colors">
-            <RefreshCw className="w-4 h-4" />
-            Compare
-          </button>
+          <span className="text-gray-900 font-medium truncate max-w-[200px] sm:max-w-none">{t(product.name)}</span>
         </div>
       </div>
 
@@ -213,14 +201,14 @@ export default function ProductDetailsPage({ params }: PageProps) {
                 }`}
               >
                 <ShoppingCart className="w-5 h-5" />
-                {addedToCart ? 'ADDED TO CART!' : 'ADD TO CART'}
+                {addedToCart ? t('ADDED TO CART!') : t('ADD TO CART')}
               </button>
               <button
                 onClick={handleBuyNow}
                 className="py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-2.5 bg-[#B00020] hover:bg-[#900010] text-white transition-all text-base hover:shadow shadow-sm cursor-pointer"
               >
                 <Zap className="w-5 h-5" />
-                BUY NOW
+                {t("BUY NOW")}
               </button>
             </div>
           </div>
@@ -228,23 +216,23 @@ export default function ProductDetailsPage({ params }: PageProps) {
           {/* RIGHT COLUMN: Product Info details */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             <div>
-              <span className="text-xs text-gray-400 font-semibold tracking-wider uppercase">{product.company}</span>
-              <h1 className="text-2xl sm:text-3xl font-syne font-bold text-gray-900 mt-1 leading-tight">{product.name}</h1>
+              <span className="text-xs text-gray-400 font-semibold tracking-wider uppercase">{t(product.company)}</span>
+              <h1 className="text-2xl sm:text-3xl font-syne font-bold text-gray-900 mt-1 leading-tight">{t(product.name)}</h1>
               
               {/* Rating and Stock */}
               <div className="flex flex-wrap items-center gap-4 mt-3">
                 <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-100">
                   <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                   <span className="text-sm font-bold text-amber-800">{product.rating}</span>
-                  <span className="text-xs text-amber-600">({product.reviewCount.toLocaleString()}+ reviews)</span>
+                  <span className="text-xs text-amber-600">({product.reviewCount.toLocaleString()}+ {t("reviews")})</span>
                 </div>
                 {product.inStock ? (
                   <span className="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full border border-emerald-100">
-                    In Stock
+                    {t("In Stock")}
                   </span>
                 ) : (
                   <span className="bg-red-50 text-red-700 text-xs font-bold px-3 py-1 rounded-full border border-red-100">
-                    Out of Stock
+                    {t("Out of Stock")}
                   </span>
                 )}
               </div>
@@ -253,19 +241,19 @@ export default function ProductDetailsPage({ params }: PageProps) {
             {/* Technical Quick Info */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-3 border-y border-gray-100 text-xs sm:text-sm text-gray-600">
               <div>
-                <span className="block text-gray-400 font-medium">Category</span>
-                <span className="font-semibold text-gray-900">{product.brand}</span>
+                <span className="block text-gray-400 font-medium">{t("Category")}</span>
+                <span className="font-semibold text-gray-900">{t(getProductCategory(product.id))}</span>
               </div>
               <div>
-                <span className="block text-gray-400 font-medium">Company</span>
-                <span className="font-semibold text-gray-900 truncate block">{product.company}</span>
+                <span className="block text-gray-400 font-medium">{t("Company")}</span>
+                <span className="font-semibold text-gray-900 truncate block">{t(product.company)}</span>
               </div>
               <div>
-                <span className="block text-gray-400 font-medium">Brand/Model</span>
-                <span className="font-semibold text-gray-900">{product.model}</span>
+                <span className="block text-gray-400 font-medium">{t("Brand/Model")}</span>
+                <span className="font-semibold text-gray-900">{t(product.brand)} / {t(product.model)}</span>
               </div>
               <div>
-                <span className="block text-gray-400 font-medium">Mfg Date</span>
+                <span className="block text-gray-400 font-medium">{t("Date of Manufacture")}</span>
                 <span className="font-semibold text-gray-900">{product.dateOfManufacture}</span>
               </div>
             </div>
@@ -281,40 +269,18 @@ export default function ProductDetailsPage({ params }: PageProps) {
                     <span className="text-base text-gray-400 line-through font-medium">
                       {formatPrice(product.price)}
                     </span>
-                    <span className="text-xs font-bold bg-[#B00020]/10 text-[#B00020] px-2 py-0.5 rounded-md animate-pulse">
-                      {discountPercent}% OFF
+                    <span className="text-xs font-bold bg-[#B00020]/10 text-[#B00020] px-2 py-0.5 rounded-md">
+                      {discountPercent}% {t("OFF")}
                     </span>
                   </>
                 )}
               </div>
-              <span className="text-xs text-gray-400 font-medium">*Inclusive of all taxes</span>
-            </div>
-
-            {/* Social Interactions */}
-            <div className="flex items-center gap-6 text-xs text-gray-500 font-medium">
-              <span className="flex items-center gap-1">
-                <Heart className="w-4 h-4 text-pink-500 fill-pink-500" />
-                52 likes
-              </span>
-              <span className="flex items-center gap-1">
-                <Eye className="w-4 h-4 text-gray-400" />
-                284 views
-              </span>
-              <a 
-                href="https://wa.me/919999999999" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="flex items-center gap-1 text-[#25D366] hover:underline"
-              >
-                <MessageCircle className="w-4 h-4 fill-emerald-100" />
-                Online Contact
-              </a>
             </div>
 
             {/* Color Selector */}
             {product.colors && product.colors.length > 0 && (
               <div className="flex flex-col gap-2">
-                <span className="text-sm font-bold text-gray-900">Color</span>
+                <span className="text-sm font-bold text-gray-900">{t("Select Color")}</span>
                 <div className="flex gap-3">
                   {product.colors.map((color) => (
                     <button
@@ -334,7 +300,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
 
             {/* Delivery/Pincode check */}
             <div className="flex flex-col gap-3 p-4 border border-gray-100 rounded-2xl bg-gray-50/20">
-              <span className="text-sm font-bold text-gray-900">Delivery</span>
+              <span className="text-sm font-bold text-gray-900">{t("Delivery")}</span>
               <form onSubmit={handlePincodeCheck} className="flex gap-2 max-w-sm">
                 <div className="relative flex-1">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -343,7 +309,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
                     maxLength={6}
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
-                    placeholder="Enter Pincode"
+                    placeholder={t("Enter Pincode")}
                     className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-xl outline-none focus:border-primary transition-all bg-white"
                   />
                 </div>
@@ -351,73 +317,15 @@ export default function ProductDetailsPage({ params }: PageProps) {
                   type="submit"
                   className="bg-[#B00020] hover:bg-[#900010] text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-sm shadow-[#B00020]/10"
                 >
-                  CHECK
+                  {t("CHECK")}
                 </button>
               </form>
-              
-              {pincodeChecked && (
-                <div className="text-xs mt-1 animate-in fade-in slide-in-from-top-1">
-                  {pincodeSuccess ? (
-                    <div className="flex flex-col gap-1 text-emerald-700 font-medium">
-                      <span className="flex items-center gap-1">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 fill-emerald-50" />
-                        Delivery by 12 May, Wednesday | Free Delivery
-                      </span>
-                      <span className="text-gray-500 pl-4.5">COD Available</span>
-                    </div>
-                  ) : (
-                    <span className="text-red-500 font-medium">Please enter a valid 6-digit pincode.</span>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Trust Policy badging */}
-            <div className="grid grid-cols-3 gap-2 border border-gray-100 rounded-2xl p-4 bg-gray-50/10">
-              <div className="flex flex-col items-center text-center gap-1.5">
-                <div className="bg-[#B00020]/10 p-2.5 rounded-full">
-                  <RefreshCw className="w-5 h-5 text-[#B00020]" />
-                </div>
-                <span className="text-xs font-bold text-gray-900">7 Days Return</span>
-              </div>
-              <div className="flex flex-col items-center text-center gap-1.5 border-x border-gray-100">
-                <div className="bg-[#B00020]/10 p-2.5 rounded-full">
-                  <ShieldCheck className="w-5 h-5 text-[#B00020]" />
-                </div>
-                <span className="text-xs font-bold text-gray-900">1 Year Warranty</span>
-              </div>
-              <div className="flex flex-col items-center text-center gap-1.5">
-                <div className="bg-[#B00020]/10 p-2.5 rounded-full">
-                  <Truck className="w-5 h-5 text-[#B00020]" />
-                </div>
-                <span className="text-xs font-bold text-gray-900">Secure Payment</span>
-              </div>
             </div>
 
             {/* Description */}
             <div className="flex flex-col gap-2">
-              <span className="text-sm font-bold text-gray-900">Product Description</span>
-              <p className="text-sm text-gray-600 leading-relaxed font-medium">{product.description}</p>
-            </div>
-
-            {/* Seller Info card */}
-            <div className="border border-gray-100 rounded-2xl p-5 bg-gray-50/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="bg-red-50 text-[#B00020] font-bold text-lg w-12 h-12 rounded-xl flex items-center justify-center">
-                  S
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-gray-900">{product.seller.name}</h4>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                    <span className="text-xs font-bold text-gray-700">{product.seller.rating}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col text-xs font-medium text-gray-500 max-w-xs sm:text-right">
-                <span className="text-gray-900 font-bold">Seller Highlights</span>
-                <span className="mt-1 leading-normal">{product.seller.offer}</span>
-              </div>
+              <span className="text-sm font-bold text-gray-900">{t("Product Description")}</span>
+              <p className="text-sm text-gray-600 leading-relaxed font-medium">{t(product.description)}</p>
             </div>
 
           </div>
@@ -426,7 +334,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
 
         {/* REVIEWS SECTION */}
         <section className="mt-16 pt-12 border-t border-gray-100">
-          <h2 className="text-2xl font-syne font-bold text-gray-900 mb-8">Customer reviews</h2>
+          <h2 className="text-2xl font-syne font-bold text-gray-900 mb-8">{t("Customer Reviews")}</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             
@@ -434,7 +342,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
             <div className="lg:col-span-4 flex flex-col gap-4">
               <div className="flex items-baseline gap-2">
                 <span className="text-5xl font-extrabold text-gray-900">{product.rating}</span>
-                <span className="text-sm text-gray-400 font-semibold">out of 5</span>
+                <span className="text-sm text-gray-400 font-semibold">{t("out of 5")}</span>
               </div>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -443,7 +351,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
                     className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'text-amber-500 fill-amber-500' : 'text-gray-200'}`} 
                   />
                 ))}
-                <span className="text-xs text-gray-400 font-medium ml-2">{totalReviewsCount.toLocaleString()} ratings</span>
+                <span className="text-xs text-gray-400 font-medium ml-2">{totalReviewsCount.toLocaleString()} {t("ratings")}</span>
               </div>
 
               {/* Rating Bars */}
@@ -452,7 +360,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
                   const percent = totalReviewsCount > 0 ? (breakdown.count / totalReviewsCount) * 100 : 0;
                   return (
                     <div key={breakdown.stars} className="flex items-center text-sm font-medium">
-                      <span className="w-12 text-gray-500 shrink-0">{breakdown.stars} star</span>
+                      <span className="w-12 text-gray-500 shrink-0">{breakdown.stars} {t("star")}</span>
                       <div className="flex-1 h-3 bg-gray-100 rounded-full mx-3 overflow-hidden">
                         <div 
                           className="h-full bg-amber-500 rounded-full" 
@@ -464,44 +372,10 @@ export default function ProductDetailsPage({ params }: PageProps) {
                   );
                 })}
               </div>
-
-              {/* Review call to action */}
-              <div className="mt-6 p-5 border border-gray-100 rounded-2xl bg-gray-50/20 text-center sm:text-left">
-                <h4 className="text-sm font-bold text-gray-900">Review this product</h4>
-                <p className="text-xs text-gray-500 mt-1 mb-4 leading-relaxed font-medium">
-                  Share your thoughts with other customers to help them make the right choice.
-                </p>
-                <button className="w-full bg-white hover:bg-gray-50 text-gray-800 text-xs font-bold py-2.5 px-4 rounded-xl border border-gray-200 transition-colors shadow-sm cursor-pointer">
-                  Write a product review
-                </button>
-              </div>
             </div>
 
             {/* Reviews List */}
             <div className="lg:col-span-8 flex flex-col gap-8">
-              
-              {/* Customer media images row */}
-              {product.reviews.some((r) => r.images && r.images.length > 0) && (
-                <div>
-                  <h4 className="text-sm font-bold text-gray-900 mb-4">Reviews with images</h4>
-                  <div className="flex gap-3 overflow-x-auto pb-2">
-                    {product.reviews
-                      .flatMap((r) => r.images || [])
-                      .slice(0, 5)
-                      .map((img, idx) => (
-                        <div key={idx} className="relative w-18 h-18 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 shrink-0 group cursor-pointer hover:border-primary transition-all">
-                          <Image
-                            src={img}
-                            alt="Review media preview"
-                            fill
-                            className="object-cover group-hover:scale-105 transition-all"
-                          />
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              )}
-
               {/* Reviews Items */}
               <div className="flex flex-col gap-6 divide-y divide-gray-100">
                 {product.reviews.map((review) => {
@@ -529,26 +403,10 @@ export default function ProductDetailsPage({ params }: PageProps) {
                             />
                           ))}
                         </div>
-                        <span className="text-sm font-bold text-gray-900">{review.title}</span>
+                        <span className="text-sm font-bold text-gray-900">{t(review.title)}</span>
                       </div>
 
-                      <p className="text-sm text-gray-600 leading-relaxed font-medium">{review.body}</p>
-
-                      {/* Review Specific Images */}
-                      {review.images && review.images.length > 0 && (
-                        <div className="flex gap-2.5 mt-1">
-                          {review.images.map((img, idx) => (
-                            <div key={idx} className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
-                              <Image
-                                src={img}
-                                alt="User review asset"
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <p className="text-sm text-gray-600 leading-relaxed font-medium">{t(review.body)}</p>
 
                       <div className="flex items-center gap-3.5 mt-2">
                         <button
@@ -560,10 +418,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
                           }`}
                         >
                           <ThumbsUp className="w-3.5 h-3.5" />
-                          Helpful ({currentHelpful})
-                        </button>
-                        <button className="text-xs text-gray-400 hover:text-gray-600 font-semibold cursor-pointer">
-                          Report
+                          {t("Helpful")} ({currentHelpful})
                         </button>
                       </div>
                     </div>
