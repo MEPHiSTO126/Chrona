@@ -5,6 +5,7 @@ import { Home, Search, ShoppingCart, User, LayoutGrid } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useState, useEffect } from 'react';
 
 const NAV_ITEMS = [
   { href: '/',          icon: Home,        label: 'Home'   },
@@ -18,6 +19,11 @@ export default function MobileNav() {
   const pathname = usePathname();
   const cartCount = useCartStore((s) => s.getTotalItems ? s.getTotalItems() : 0);
   const { isAuthenticated } = useAuthStore();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Hide on auth pages
   if (pathname === '/login' || pathname === '/register') return null;
@@ -64,7 +70,7 @@ export default function MobileNav() {
                       isActive ? 'scale-110 stroke-[2.5]' : 'stroke-[1.8]'
                     }`}
                   />
-                  {isCart && cartCount > 0 && (
+                  {isMounted && isCart && cartCount > 0 && (
                     <span className="absolute -top-1.5 -right-1.5 bg-primary text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-sm">
                       {cartCount > 9 ? '9+' : cartCount}
                     </span>

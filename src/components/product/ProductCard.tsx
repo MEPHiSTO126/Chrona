@@ -16,6 +16,7 @@ export interface ProductCardProps {
   reviewCount?: number;
   saleEndTime?: string | Date;
   showDealLabel?: boolean;
+  category?: string;
   className?: string;
 }
 

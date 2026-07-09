@@ -17,11 +17,11 @@ export default function NotFound() {
           Chrona
         </h1>
         <h2 className="text-2xl sm:text-4xl font-syne font-bold text-gray-900 absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 whitespace-nowrap">
-          {t("Coming Soon")}
+          {t("Page Not Found")}
         </h2>
       </div>
       <p className="text-gray-500 text-sm sm:text-base mt-8 max-w-md mx-auto font-medium leading-relaxed">
-        {t("We're working hard to bring this page to life! Stay tuned for updates on our premium e-commerce features.")}
+        {t("Sorry, we couldn't find the page you're looking for. It might have been moved or doesn't exist.")}
       </p>
       <Link 
         href="/"

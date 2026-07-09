@@ -24,8 +24,9 @@ export const mockFlashSales: ProductCardProps[] = [
     discountedPrice: 299000,
     rating: 4.8,
     reviewCount: 1245,
-    saleEndTime: new Date(Date.now() + 1000 * 60 * 60 * 5).toISOString(), // 5 hours from now
+    saleEndTime: new Date(Date.now() + 1000 * 60 * 60 * 5).toISOString(),
     showDealLabel: true,
+    category: "electronics",
   },
   {
     id: "f2",
@@ -38,6 +39,7 @@ export const mockFlashSales: ProductCardProps[] = [
     reviewCount: 890,
     saleEndTime: new Date(Date.now() + 1000 * 60 * 60 * 2).toISOString(),
     showDealLabel: true,
+    category: "fashion",
   },
   {
     id: "f3",
@@ -50,6 +52,7 @@ export const mockFlashSales: ProductCardProps[] = [
     reviewCount: 450,
     saleEndTime: new Date(Date.now() + 1000 * 60 * 60 * 12).toISOString(),
     showDealLabel: true,
+    category: "appliances",
   },
   {
     id: "f4",
@@ -62,6 +65,7 @@ export const mockFlashSales: ProductCardProps[] = [
     reviewCount: 3200,
     saleEndTime: new Date(Date.now() + 1000 * 60 * 60 * 8).toISOString(),
     showDealLabel: true,
+    category: "electronics",
   },
 ];
 
@@ -73,6 +77,7 @@ export const mockTrending: ProductCardProps[] = [
     price: 95000,
     rating: 4.6,
     reviewCount: 620,
+    category: "fashion",
   },
   {
     id: "t2",
@@ -82,6 +87,7 @@ export const mockTrending: ProductCardProps[] = [
     discountedPrice: 220000,
     rating: 4.7,
     reviewCount: 1050,
+    category: "electronics",
   },
   {
     id: "t3",
@@ -90,6 +96,7 @@ export const mockTrending: ProductCardProps[] = [
     price: 85000,
     rating: 4.5,
     reviewCount: 430,
+    category: "appliances",
   },
 ];
 
@@ -102,6 +109,7 @@ export const mockGadgets: ProductCardProps[] = [
     discountedPrice: 120000,
     rating: 4.4,
     reviewCount: 320,
+    category: "electronics",
   },
   {
     id: "g2",
@@ -110,6 +118,7 @@ export const mockGadgets: ProductCardProps[] = [
     price: 85000,
     rating: 4.2,
     reviewCount: 150,
+    category: "electronics",
   },
   {
     id: "g3",
@@ -119,6 +128,7 @@ export const mockGadgets: ProductCardProps[] = [
     discountedPrice: 38000,
     rating: 4.5,
     reviewCount: 890,
+    category: "electronics",
   },
   {
     id: "g4",
@@ -127,6 +137,7 @@ export const mockGadgets: ProductCardProps[] = [
     price: 25000,
     rating: 4.8,
     reviewCount: 2100,
+    category: "electronics",
   },
 ];
 
@@ -139,6 +150,7 @@ export const mockAppliances: ProductCardProps[] = [
     discountedPrice: 150000,
     rating: 4.7,
     reviewCount: 420,
+    category: "appliances",
   },
   {
     id: "a2",
@@ -147,6 +159,7 @@ export const mockAppliances: ProductCardProps[] = [
     price: 320000,
     rating: 4.6,
     reviewCount: 180,
+    category: "appliances",
   },
   {
     id: "a3",
@@ -156,6 +169,7 @@ export const mockAppliances: ProductCardProps[] = [
     discountedPrice: 55000,
     rating: 4.8,
     reviewCount: 650,
+    category: "appliances",
   },
   {
     id: "a4",
@@ -164,6 +178,7 @@ export const mockAppliances: ProductCardProps[] = [
     price: 120000,
     rating: 4.5,
     reviewCount: 310,
+    category: "appliances",
   },
 ];
 
@@ -176,6 +191,7 @@ export const mockFashion: ProductCardProps[] = [
     discountedPrice: 60000,
     rating: 4.8,
     reviewCount: 850,
+    category: "fashion",
   },
   {
     id: "fa2",
@@ -184,6 +200,7 @@ export const mockFashion: ProductCardProps[] = [
     price: 65000,
     rating: 4.5,
     reviewCount: 420,
+    category: "fashion",
   },
   {
     id: "fa3",
@@ -193,6 +210,7 @@ export const mockFashion: ProductCardProps[] = [
     discountedPrice: 70000,
     rating: 4.7,
     reviewCount: 610,
+    category: "fashion",
   },
   {
     id: "fa4",
@@ -201,6 +219,7 @@ export const mockFashion: ProductCardProps[] = [
     price: 55000,
     rating: 4.3,
     reviewCount: 240,
+    category: "fashion",
   },
 ];
 

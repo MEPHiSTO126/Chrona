@@ -38,11 +38,10 @@ api.interceptors.response.use(
     // If the server returns a 401 Unauthorized, the token might be expired or invalid.
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        // Here you could implement logic to use a refresh token
-        // Or simply clear the invalid token and redirect the user to login:
-        
-        // localStorage.removeItem('access_token');
-        // window.location.href = '/login';
+        // Clear the invalid token and redirect the user to login:
+        localStorage.removeItem('access_token');
+        document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        window.location.href = '/login';
       }
     }
     return Promise.reject(error);
