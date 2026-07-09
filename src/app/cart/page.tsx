@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   ShoppingCart,
   MapPin,
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Button } from '@/components/ui/button';
 
 export default function CartPage() {
   const router = useRouter();
@@ -24,6 +25,19 @@ export default function CartPage() {
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
   const { t } = useTranslation();
+
+  // Recalculate discount when subtotal changes (cart items updated)
+  useEffect(() => {
+    if (couponApplied && couponCode) {
+      const code = couponCode.trim().toUpperCase();
+      const subtotal = getSubtotal();
+      if (code === 'CHRONA20') {
+        setDiscount(Math.round(subtotal * 0.2));
+      } else if (code === 'WELCOME500') {
+        setDiscount(Math.min(500, subtotal));
+      }
+    }
+  }, [getSubtotal, couponApplied, couponCode]);
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,16 +68,16 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center bg-gray-50/50 font-urbanist py-12 px-4">
-        <div className="bg-red-50 p-6 rounded-full text-[#B00020] mb-5">
+        <div className="bg-red-50 p-6 rounded-full text-primary mb-5">
           <ShoppingBag className="w-12 h-12 sm:w-16 sm:h-16" />
         </div>
         <h1 className="text-xl sm:text-2xl font-syne font-bold text-gray-900">{t("Your cart is empty")}</h1>
         <p className="text-gray-500 text-sm mt-2 mb-8 text-center max-w-sm font-medium">
           {t("Looks like you haven't added anything to your cart yet. Explore our latest arrivals!")}
         </p>
-        <Link
+<Link
           href="/"
-          className="bg-[#B00020] hover:bg-[#900010] text-white font-bold py-3 px-8 rounded-full shadow-md transition-all flex items-center gap-2"
+          className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-full shadow-md transition-all flex items-center gap-2"
         >
           {t("Continue Shopping")}
           <ArrowRight className="w-4 h-4" />
@@ -82,14 +96,14 @@ export default function CartPage() {
             {/* Background line */}
             <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-gray-200 z-0"></div>
             {/* Active line */}
-            <div className="absolute left-0 w-1/2 top-1/2 -translate-y-1/2 h-0.5 bg-[#B00020] z-0"></div>
+            <div className="absolute left-0 w-1/2 top-1/2 -translate-y-1/2 h-0.5 bg-primary z-0"></div>
 
             {/* Step 1: Cart */}
             <div className="relative z-10 flex flex-col items-center gap-1.5">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
                 <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="text-[9px] sm:text-[10px] font-bold text-[#B00020] tracking-wider uppercase">{t("Cart")}</span>
+              <span className="text-[9px] sm:text-[10px] font-bold text-primary tracking-wider uppercase">{t("Cart")}</span>
             </div>
 
             {/* Step 2: Address */}
@@ -163,13 +177,15 @@ export default function CartPage() {
                       <ChevronDown className="w-3 h-3 text-gray-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
 
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="flex items-center gap-1 text-gray-400 hover:text-[#B00020] transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      <span className="text-xs font-bold hidden sm:block">{t("Remove")}</span>
-                    </button>
+                    <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeItem(item.id)}
+                    className="text-gray-400 hover:text-primary transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="text-xs font-bold hidden sm:block">{t("Remove")}</span>
+                  </Button>
                   </div>
                 </div>
 
@@ -235,25 +251,25 @@ export default function CartPage() {
                   )}
                 </div>
                 {!couponApplied ? (
-                  <button type="submit" className="bg-[#B00020]/5 hover:bg-[#B00020]/10 text-[#B00020] text-xs font-bold px-3 py-2.5 rounded-xl border border-dashed border-[#B00020] transition-all cursor-pointer">
+                  <Button type="submit" variant="outline" className="text-xs font-bold px-3 py-2.5 rounded-xl border-dashed border-primary text-primary hover:bg-primary/5 transition-all cursor-pointer">
                     {t("APPLY")}
-                  </button>
+                  </Button>
                 ) : (
-                  <button type="button" onClick={() => { setCouponApplied(false); setDiscount(0); setCouponCode(''); }} className="bg-red-50 hover:bg-red-100 text-[#B00020] text-xs font-bold px-3 py-2.5 rounded-xl transition-all cursor-pointer">
+                  <Button type="button" variant="secondary" onClick={() => { setCouponApplied(false); setDiscount(0); setCouponCode(''); }} className="text-xs font-bold px-3 py-2.5 rounded-xl transition-all cursor-pointer">
                     {t("Remove")}
-                  </button>
+                  </Button>
                 )}
               </form>
               {couponError && <p className="text-xs text-red-500 font-medium -mt-2">{couponError}</p>}
 
               {/* Checkout Button — visible on desktop */}
-              <button
+              <Button
                 onClick={() => router.push('/checkout/address')}
-                className="hidden sm:flex w-full bg-[#B00020] hover:bg-[#900010] text-white font-bold py-4 rounded-xl shadow-md transition-all text-sm items-center justify-center gap-2 cursor-pointer"
+                className="hidden sm:flex w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-md transition-all text-sm items-center justify-center gap-2 cursor-pointer"
               >
                 {t("Proceed to Checkout")}
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -267,13 +283,13 @@ export default function CartPage() {
             <span className="text-xs text-gray-500 font-medium">{t("Total")}</span>
             <span className="text-base font-extrabold text-gray-900">{formatPrice(total)}</span>
           </div>
-          <button
+          <Button
             onClick={() => router.push('/checkout/address')}
-            className="flex-1 bg-[#B00020] hover:bg-[#900010] text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all"
+            className="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition-all"
           >
             {t("Proceed to Checkout")}
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       </div>
 

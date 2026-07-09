@@ -16,35 +16,36 @@ export default function CountdownTimer({
   className = '',
   variant = 'premium',
 }: CountdownTimerProps) {
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    isExpired: false,
-  });
+  const calculateTime = (target: string | Date) => {
+    const difference = +new Date(target) - +new Date();
+    
+    if (difference <= 0) {
+      return { hours: 0, minutes: 0, seconds: 0, isExpired: true };
+    }
+
+    const hours = Math.floor(difference / (1000 * 60 * 60));
+    const minutes = Math.floor((difference / 1000 / 60) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+
+    return { hours, minutes, seconds, isExpired: false };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(() => calculateTime(targetDate));
 
   useEffect(() => {
-    const calculateTime = () => {
-      const difference = +new Date(targetDate) - +new Date();
-      
-      if (difference <= 0) {
-        setTimeLeft({ hours: 0, minutes: 0, seconds: 0, isExpired: true });
-        if (onExpire) onExpire();
-        return true;
+    const expired = calculateTime(targetDate).isExpired;
+    if (expired) {
+      if (onExpire) onExpire();
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const result = calculateTime(targetDate);
+      setTimeLeft(result);
+      if (result.isExpired && onExpire) {
+        onExpire();
       }
-
-      const hours = Math.floor(difference / (1000 * 60 * 60));
-      const minutes = Math.floor((difference / 1000 / 60) % 60);
-      const seconds = Math.floor((difference / 1000) % 60);
-
-      setTimeLeft({ hours, minutes, seconds, isExpired: false });
-      return false;
-    };
-
-    const expired = calculateTime();
-    if (expired) return;
-
-    const interval = setInterval(calculateTime, 1000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [targetDate, onExpire]);
 

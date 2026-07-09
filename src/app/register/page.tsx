@@ -96,9 +96,9 @@ const Register = () => {
           />
           <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors leading-relaxed">
             I accept the{" "}
-            <a href="#" className="text-primary underline hover:text-orange-400 transition-colors">Terms of Services</a>
+            <a href="/policies/terms" className="text-primary underline hover:text-orange-400 transition-colors">Terms of Services</a>
             {" "}and{" "}
-            <a href="#" className="text-primary underline hover:text-orange-400 transition-colors">Privacy Policy</a>
+            <a href="/policies/privacy" className="text-primary underline hover:text-orange-400 transition-colors">Privacy Policy</a>
           </span>
         </label>
 

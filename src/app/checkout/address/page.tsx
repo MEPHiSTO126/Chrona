@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useAddressStore, Address } from '@/store/useAddressStore';
+import { Button } from '@/components/ui/button';
 
 export default function AddressCheckoutPage() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function AddressCheckoutPage() {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
+  const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -81,13 +83,18 @@ export default function AddressCheckoutPage() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const newAddress: Address = {
-      id: `addr-${Date.now()}`,
+    const addressData: Address = {
+      id: editingAddressId || `addr-${Date.now()}`,
       ...formData,
     };
 
-    addAddress(newAddress);
+    if (editingAddressId) {
+      // For editing, we need to remove and re-add (since there's no update in store)
+      removeAddress(editingAddressId);
+    }
+    addAddress(addressData);
     setIsModalOpen(false);
+    setEditingAddressId(null);
     // Reset form
     setFormData({
       name: '',
@@ -101,6 +108,7 @@ export default function AddressCheckoutPage() {
       state: '',
       phone: '',
     });
+    setFormErrors({});
   };
 
   const handleUseCurrentLocation = () => {
@@ -206,16 +214,32 @@ export default function AddressCheckoutPage() {
                     </div>
 
                     <div className="flex gap-4 mt-6 border-t border-gray-100 pt-4 text-xs font-bold uppercase tracking-wider">
-                      <button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // Modal edit could be wired, or simply toggle selected
-                        }}
-                        className="text-gray-400 hover:text-gray-600 transition-colors flex items-center gap-1 cursor-pointer"
-                      >
-                        <Edit3 className="w-3.5 h-3.5" />
-                        Edit
-                      </button>
+{/* Edit button */}
+<Button
+  variant="ghost"
+  size="sm"
+  onClick={(e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFormData({
+      name: address.name,
+      surname: address.surname,
+      houseNo: address.houseNo,
+      street: address.street,
+      landmark: address.landmark || '',
+      postcode: address.postcode,
+      city: address.city,
+      country: address.country,
+      state: address.state,
+      phone: address.phone,
+    });
+    setEditingAddressId(address.id);
+    setIsModalOpen(true);
+  }}
+  className="text-gray-400 hover:text-gray-600 transition-colors flex items-center gap-1 cursor-pointer"
+>
+  <Edit3 className="w-3.5 h-3.5" />
+  Edit
+</Button>
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
@@ -233,7 +257,23 @@ export default function AddressCheckoutPage() {
 
               {/* Add New Address Card */}
               <button 
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  setEditingAddressId(null);
+                  setFormData({
+                    name: '',
+                    surname: '',
+                    houseNo: '',
+                    street: '',
+                    landmark: '',
+                    postcode: '',
+                    city: '',
+                    country: 'India',
+                    state: '',
+                    phone: '',
+                  });
+                  setFormErrors({});
+                  setIsModalOpen(true);
+                }}
                 className="rounded-2xl border-2 border-dashed border-gray-200 bg-white hover:border-[#B00020] hover:bg-gray-50/20 transition-all duration-300 flex flex-col items-center justify-center p-8 gap-3 text-center min-h-[220px] group cursor-pointer"
               >
                 <div className="w-12 h-12 rounded-full border-2 border-dashed border-gray-300 text-gray-400 flex items-center justify-center group-hover:border-[#B00020] group-hover:text-[#B00020] transition-colors">
@@ -319,9 +359,27 @@ export default function AddressCheckoutPage() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto z-10 border border-gray-100 relative animate-in zoom-in-95 duration-200">
             {/* Header */}
             <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Add New Address</h3>
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                {editingAddressId ? 'Edit Address' : 'Add New Address'}
+              </h3>
               <button 
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setEditingAddressId(null);
+                  setFormData({
+                    name: '',
+                    surname: '',
+                    houseNo: '',
+                    street: '',
+                    landmark: '',
+                    postcode: '',
+                    city: '',
+                    country: 'India',
+                    state: '',
+                    phone: '',
+                  });
+                  setFormErrors({});
+                }}
                 className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
@@ -504,12 +562,12 @@ export default function AddressCheckoutPage() {
                 >
                   Cancel
                 </button>
-                <button
+                <Button
                   type="submit"
                   className="flex-1 bg-[#B00020] hover:bg-[#900010] text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
                 >
-                  Save Address
-                </button>
+                  {editingAddressId ? 'Save Changes' : 'Save Address'}
+                </Button>
               </div>
 
             </form>

@@ -35,21 +35,19 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Primary Brand Colors (Teal Blue from Logo) */
-  --color-primary: #1B6B93;
-  --color-primary-dark: #145374;
-  --color-primary-light: #D6EAF8;
-  
-  /* Primary Brand Colors (Orange Palette) */
-  --color-primary: var(--raw-orange);
-  --color-primary-dark: #C2410C;
+  /* Primary Brand Color - Deep Red (#B00020) */
+  --color-primary: #B00020;
+  --color-primary-dark: #900010;
   --color-primary-light: #FFEDD5;
-
+  
   /* Accent Colors */
-  --color-accent: var(--raw-orange);
-  --color-accent-dark: #C2410C;
+  --color-accent: #B00020;
+  --color-accent-dark: #900010;
 
   /* Palette names */
+  --color-brand-red: #B00020;
+  --color-brand-dark-red: #900010;
+  --color-brand-light-red: #FFEDD5;
   --color-brand-black: var(--raw-black);
   --color-brand-orange: var(--raw-orange);
   --color-brand-swirl: var(--raw-swirl);

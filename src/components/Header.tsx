@@ -26,8 +26,14 @@ export default function Header() {
   const [tempLocation, setTempLocation] = useState(location);
   const [isDetecting, setIsDetecting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
 
   const langDropdownRef = useRef<HTMLDivElement>(null);
+  const searchDebounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -56,13 +62,21 @@ export default function Header() {
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
     const trimmed = val.trim();
-    if (trimmed) {
-      pathname !== '/search'
-        ? router.push(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false })
-        : router.replace(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
-    } else if (pathname === '/search') {
-      router.replace('/search', { scroll: false });
+    
+    // Debounce the navigation to avoid history spam
+    if (searchDebounceRef.current) {
+      clearTimeout(searchDebounceRef.current);
     }
+    
+    searchDebounceRef.current = setTimeout(() => {
+      if (trimmed) {
+        pathname !== '/search'
+          ? router.push(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false })
+          : router.replace(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
+      } else if (pathname === '/search') {
+        router.replace('/search', { scroll: false });
+      }
+    }, 300);
   };
 
   const detectLocation = () => {
@@ -170,7 +184,7 @@ export default function Header() {
           )}
 
           {/* Return — desktop */}
-          <Link href="/returns" className="hidden sm:flex flex-col items-center gap-0.5 hover:text-primary text-gray-700 transition-colors">
+          <Link href="/help/returns" className="hidden sm:flex flex-col items-center gap-0.5 hover:text-primary text-gray-700 transition-colors">
             <RefreshCcw className="w-5 h-5" />
             <span className="text-[9px] font-medium">{t("Return")}</span>
           </Link>
@@ -179,7 +193,7 @@ export default function Header() {
           <Link href="/cart" className="relative flex flex-col items-center gap-0.5 hover:text-primary text-gray-700 transition-colors">
             <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
             <span className="text-[9px] font-medium hidden sm:block">{t("Cart")}</span>
-            {cartItemsCount > 0 && (
+            {isMounted && cartItemsCount > 0 && (
               <span className="absolute -top-1.5 -right-2 bg-accent text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {cartItemsCount}
               </span>

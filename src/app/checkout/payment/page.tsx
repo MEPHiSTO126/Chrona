@@ -27,7 +27,7 @@ export default function PaymentCheckoutPage() {
   const { items, getSubtotal, clearCart } = useCartStore();
   const { addresses, selectedAddressId } = useAddressStore();
   
-  const [activeAccordion, setActiveAccordion] = useState<PaymentMethodType>('upi');
+  const [activeAccordion, setActiveAccordion] = useState<PaymentMethodType | null>('upi');
   const [selectedUpiApp, setSelectedUpiApp] = useState<'phonepe' | 'paytm' | ''>('phonepe');
   const [selectedBank, setSelectedBank] = useState<string>('');
   
@@ -124,7 +124,7 @@ export default function PaymentCheckoutPage() {
   };
 
   const toggleAccordion = (method: PaymentMethodType) => {
-    setActiveAccordion(prev => (prev === method ? 'upi' : method));
+    setActiveAccordion(prev => (prev === method ? null : method));
   };
 
   if (!deliveryAddress) {
