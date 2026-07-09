@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useAddressStore } from '@/store/useAddressStore';
+import { Button } from '@/components/ui/button';
 
 type PaymentMethodType = 'upi' | 'card' | 'netbanking' | 'cod';
 
@@ -362,7 +363,7 @@ export default function PaymentCheckoutPage() {
               
               {activeAccordion === 'netbanking' && (
                 <div className="px-6 pb-6 border-t border-gray-50 pt-5 space-y-4 animate-in slide-in-from-top-2 duration-200">
-                  <div className="grid grid-cols-2 gap-3">
+<div className="grid grid-cols-2 gap-3">
                     {['HDFC Bank', 'ICICI Bank', 'SBI', 'Axis Bank'].map((bank) => (
                       <div 
                         key={bank}
@@ -376,10 +377,6 @@ export default function PaymentCheckoutPage() {
                         }`}>
                           {selectedBank === bank && <div className="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>}
                         </div>
-                        <span className="text-xs font-bold text-gray-700 truncate">{bank}</span>
-                      </div>
-                    ))}
-                  </div>
                         <span className="text-xs font-bold text-gray-700 truncate">{bank}</span>
                       </div>
                     ))}
@@ -472,7 +469,7 @@ export default function PaymentCheckoutPage() {
                 ) : (
                   'Place Order'
                 )}
-              </button>
+              </Button>
 
             </div>
           </div>
@@ -507,7 +504,7 @@ export default function PaymentCheckoutPage() {
               className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all cursor-pointer shadow-sm shadow-primary/10"
             >
               Back to Home
-            </button>
+            </Button>
           </div>
         </div>
       )}
