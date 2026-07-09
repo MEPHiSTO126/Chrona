@@ -136,27 +136,27 @@ export default function AddressCheckoutPage() {
       
       {/* Stepper Header */}
       <div className="bg-white border-b border-gray-200 py-6 mb-8">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between max-w-3xl mx-auto">
             {/* Background Line */}
             <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-gray-200 z-0"></div>
             {/* Active connecting line (full first half, up to Address) */}
-            <div className="absolute left-0 w-1/2 top-1/2 -translate-y-1/2 h-1 bg-[#B00020] z-0"></div>
+            <div className="absolute left-0 w-1/2 top-1/2 -translate-y-1/2 h-1 bg-primary z-0"></div>
 
             {/* Step 1: My Cart */}
             <Link href="/cart" className="relative z-10 flex flex-col items-center gap-2 group">
-              <div className="w-10 h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white shadow-sm font-bold group-hover:scale-105 transition-transform">
                 <ShoppingCart className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">MY CART</span>
+              <span className="text-[10px] font-bold text-primary tracking-wider uppercase">MY CART</span>
             </Link>
 
             {/* Step 2: Address */}
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
+              <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
                 <MapPin className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">ADDRESS</span>
+              <span className="text-[10px] font-bold text-primary tracking-wider uppercase">ADDRESS</span>
             </div>
 
             {/* Step 3: Payment */}
@@ -171,7 +171,7 @@ export default function AddressCheckoutPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT COLUMN: Address List */}
@@ -188,14 +188,14 @@ export default function AddressCheckoutPage() {
                     onClick={() => selectAddress(address.id)}
                     className={`rounded-2xl p-6 border-2 transition-all duration-300 relative flex flex-col justify-between cursor-pointer min-h-[220px] ${
                       isSelected 
-                        ? 'border-[#B00020] bg-gray-50/50 shadow-sm' 
+                        ? 'border-primary bg-gray-50/50 shadow-sm' 
                         : 'border-gray-100 bg-white hover:border-gray-300'
                     }`}
                   >
                     {/* Selected Badge Star */}
                     {isSelected && (
-                      <span className="absolute top-6 right-6 text-[#B00020]">
-                        <Check className="w-5 h-5 bg-[#B00020]/10 p-0.5 rounded-full" />
+                      <span className="absolute top-6 right-6 text-primary">
+                        <Check className="w-5 h-5 bg-primary/10 p-0.5 rounded-full" />
                       </span>
                     )}
 
@@ -240,23 +240,28 @@ export default function AddressCheckoutPage() {
   <Edit3 className="w-3.5 h-3.5" />
   Edit
 </Button>
-                      <button 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
                           removeAddress(address.id);
                         }}
-                        className="text-gray-400 hover:text-[#B00020] transition-colors flex items-center gap-1 cursor-pointer"
+                        className="text-gray-400 hover:text-primary transition-colors flex items-center gap-1 cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 );
               })}
 
               {/* Add New Address Card */}
-              <button 
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-2xl border-2 border-dashed border-gray-200 bg-white hover:border-primary hover:bg-gray-50/20 transition-all duration-300 flex flex-col items-center justify-center p-8 gap-3 text-center min-h-[220px] group cursor-pointer w-full"
                 onClick={() => {
                   setEditingAddressId(null);
                   setFormData({
@@ -274,15 +279,14 @@ export default function AddressCheckoutPage() {
                   setFormErrors({});
                   setIsModalOpen(true);
                 }}
-                className="rounded-2xl border-2 border-dashed border-gray-200 bg-white hover:border-[#B00020] hover:bg-gray-50/20 transition-all duration-300 flex flex-col items-center justify-center p-8 gap-3 text-center min-h-[220px] group cursor-pointer"
               >
-                <div className="w-12 h-12 rounded-full border-2 border-dashed border-gray-300 text-gray-400 flex items-center justify-center group-hover:border-[#B00020] group-hover:text-[#B00020] transition-colors">
+                <div className="w-12 h-12 rounded-full border-2 border-dashed border-gray-300 text-gray-400 flex items-center justify-center group-hover:border-primary group-hover:text-primary transition-colors">
                   <Plus className="w-6 h-6" />
                 </div>
-                <span className="text-xs font-bold text-gray-500 group-hover:text-[#B00020] uppercase tracking-wider">
+                <span className="text-xs font-bold text-gray-500 group-hover:text-primary uppercase tracking-wider">
                   Add New Address
                 </span>
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -319,12 +323,12 @@ export default function AddressCheckoutPage() {
 
               {/* Action Button */}
               {selectedAddressId ? (
-                <button
+                <Button
                   onClick={() => router.push('/checkout/payment')}
-                  className="w-full bg-[#B00020] hover:bg-[#900010] text-white font-bold py-4 rounded-xl shadow-md shadow-[#B00020]/15 transition-all text-xs uppercase tracking-widest cursor-pointer"
+                  className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-md shadow-primary/15 transition-all text-xs uppercase tracking-widest cursor-pointer"
                 >
                   Continue To Payment
-                </button>
+                </Button>
               ) : (
                 <div className="flex flex-col gap-2">
                   <button
@@ -389,15 +393,16 @@ export default function AddressCheckoutPage() {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               
               {/* GPS Auto Fill Button */}
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={handleUseCurrentLocation}
                 disabled={gpsLoading}
-                className="w-full bg-[#00BCD4] hover:bg-[#00acc1] text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer disabled:bg-cyan-300 disabled:cursor-not-allowed shadow-sm"
+                className="w-full text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm"
               >
                 <Navigation className={`w-4 h-4 ${gpsLoading ? 'animate-spin' : ''}`} />
                 {gpsLoading ? 'GETTING LOCATION...' : 'Use my current location'}
-              </button>
+              </Button>
 
               {/* Name Surname Row */}
               <div className="grid grid-cols-2 gap-4">
@@ -564,7 +569,7 @@ export default function AddressCheckoutPage() {
                 </button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#B00020] hover:bg-[#900010] text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
+                  className="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-sm"
                 >
                   {editingAddressId ? 'Save Changes' : 'Save Address'}
                 </Button>

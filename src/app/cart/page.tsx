@@ -11,7 +11,8 @@ import {
   Trash2,
   ChevronDown,
   ArrowRight,
-  ShoppingBag
+  ShoppingBag,
+  Package
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -91,7 +92,7 @@ export default function CartPage() {
 
       {/* Checkout Stepper Header */}
       <div className="bg-white border-b border-gray-200 py-4 sm:py-6 mb-5 sm:mb-8">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between max-w-xs sm:max-w-3xl mx-auto">
             {/* Background line */}
             <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-gray-200 z-0"></div>
@@ -128,7 +129,7 @@ export default function CartPage() {
       </div>
 
       {/* Main Cart Content */}
-      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
 
           {/* LEFT COLUMN: Cart Items */}
@@ -137,8 +138,12 @@ export default function CartPage() {
               <div key={item.id} className="bg-white rounded-xl p-3 sm:p-5 border border-gray-100 flex gap-3 sm:gap-6 hover:shadow-sm transition-all duration-300">
                 {/* Item Image */}
                 <div className="relative w-20 h-20 sm:w-28 sm:h-28 rounded-xl bg-gray-50 overflow-hidden shrink-0 border border-gray-100 flex items-center justify-center p-2">
-                  {item.imageUrl && (
+                  {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.name} width={100} height={100} className="object-contain w-full h-full" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-300">
+                      <Package className="w-8 h-8" />
+                    </div>
                   )}
                 </div>
 

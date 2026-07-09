@@ -130,14 +130,14 @@ export default function PaymentCheckoutPage() {
   if (!deliveryAddress) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 font-urbanist p-4">
-        <AlertCircle className="w-12 h-12 text-[#B00020] mb-3" />
+        <AlertCircle className="w-12 h-12 text-primary mb-3" />
         <h1 className="text-xl font-bold text-gray-900">Address Required</h1>
         <p className="text-gray-500 text-sm mt-1 mb-6 text-center">
           You need to select a delivery address before choosing a payment method.
         </p>
         <Link 
           href="/checkout/address" 
-          className="bg-[#B00020] hover:bg-[#900010] text-white font-bold py-2.5 px-6 rounded-xl transition-all text-sm"
+          className="bg-primary hover:bg-primary-dark text-white font-bold py-2.5 px-6 rounded-xl transition-all text-sm"
         >
           Go to Address
         </Link>
@@ -150,47 +150,47 @@ export default function PaymentCheckoutPage() {
       
       {/* Stepper Header */}
       <div className="bg-white border-b border-gray-200 py-6 mb-8">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between max-w-3xl mx-auto">
             {/* Background Line */}
             <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-gray-200 z-0"></div>
             {/* Active connecting line (Fully completed) */}
-            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-[#B00020] z-0"></div>
+            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-primary z-0"></div>
 
             {/* Step 1: My Cart */}
             <Link href="/cart" className="relative z-10 flex flex-col items-center gap-2 group">
-              <div className="w-10 h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white shadow-sm font-bold group-hover:scale-105 transition-transform">
                 <ShoppingCart className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">MY CART</span>
+              <span className="text-[10px] font-bold text-primary tracking-wider uppercase">MY CART</span>
             </Link>
 
             {/* Step 2: Address */}
             <Link href="/checkout/address" className="relative z-10 flex flex-col items-center gap-2 group">
-              <div className="w-10 h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white shadow-sm font-bold group-hover:scale-105 transition-transform">
                 <MapPin className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">ADDRESS</span>
+              <span className="text-[10px] font-bold text-primary tracking-wider uppercase">ADDRESS</span>
             </Link>
 
             {/* Step 3: Payment */}
             <div className="relative z-10 flex flex-col items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-[#B00020] text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
+              <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center border-4 border-white shadow-sm font-bold">
                 <CreditCard className="w-4 h-4" />
               </div>
-              <span className="text-[10px] font-bold text-[#B00020] tracking-wider uppercase">PAYMENT</span>
+              <span className="text-[10px] font-bold text-primary tracking-wider uppercase">PAYMENT</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Selected Address Summary Top Bar */}
         <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-8 flex justify-between items-center shadow-sm">
           <div className="flex flex-col gap-1 pr-6">
-            <span className="text-xs font-bold text-[#B00020] uppercase tracking-wider">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">
               Deliver To: {deliveryAddress.name} {deliveryAddress.surname}, {deliveryAddress.postcode}
             </span>
             <span className="text-xs text-gray-500 font-semibold truncate max-w-[280px] sm:max-w-xl">
@@ -199,7 +199,7 @@ export default function PaymentCheckoutPage() {
           </div>
           <Link 
             href="/checkout/address"
-            className="text-xs font-bold text-[#00BCD4] hover:text-[#00acc1] border border-[#00BCD4] px-4 py-2 rounded-xl transition-all whitespace-nowrap uppercase tracking-wider"
+            className="text-xs font-bold text-cyan-500 hover:text-cyan-600 border border-cyan-500 px-4 py-2 rounded-xl transition-all whitespace-nowrap uppercase tracking-wider"
           >
             Change
           </Link>
@@ -218,7 +218,7 @@ export default function PaymentCheckoutPage() {
                 className="w-full px-6 py-5 flex items-center justify-between font-bold text-sm text-gray-900 cursor-pointer"
               >
                 <span className="flex items-center gap-3">
-                  <QrCode className="w-5 h-5 text-[#B00020]" />
+                  <QrCode className="w-5 h-5 text-primary" />
                   UPI
                 </span>
                 {activeAccordion === 'upi' ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
@@ -229,7 +229,7 @@ export default function PaymentCheckoutPage() {
                   <div 
                     onClick={() => setSelectedUpiApp('phonepe')}
                     className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${
-                      selectedUpiApp === 'phonepe' ? 'border-[#B00020] bg-gray-50/50' : 'border-gray-100 hover:border-gray-200'
+                      selectedUpiApp === 'phonepe' ? 'border-primary bg-gray-50/50' : 'border-gray-100 hover:border-gray-200'
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
@@ -239,16 +239,16 @@ export default function PaymentCheckoutPage() {
                       <span className="text-xs font-bold text-gray-700">PhonePe</span>
                     </div>
                     <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                      selectedUpiApp === 'phonepe' ? 'border-[#00BCD4]' : 'border-gray-300'
+                      selectedUpiApp === 'phonepe' ? 'border-cyan-500' : 'border-gray-300'
                     }`}>
-                      {selectedUpiApp === 'phonepe' && <div className="w-2 h-2 rounded-full bg-[#00BCD4]"></div>}
+                      {selectedUpiApp === 'phonepe' && <div className="w-2 h-2 rounded-full bg-cyan-500"></div>}
                     </div>
                   </div>
 
                   <div 
                     onClick={() => setSelectedUpiApp('paytm')}
                     className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-all ${
-                      selectedUpiApp === 'paytm' ? 'border-[#B00020] bg-gray-50/50' : 'border-gray-100 hover:border-gray-200'
+                      selectedUpiApp === 'paytm' ? 'border-primary bg-gray-50/50' : 'border-gray-100 hover:border-gray-200'
                     }`}
                   >
                     <div className="flex items-center gap-3.5">
@@ -258,23 +258,23 @@ export default function PaymentCheckoutPage() {
                       <span className="text-xs font-bold text-gray-700">Paytm</span>
                     </div>
                     <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                      selectedUpiApp === 'paytm' ? 'border-[#00BCD4]' : 'border-gray-300'
+                      selectedUpiApp === 'paytm' ? 'border-cyan-500' : 'border-gray-300'
                     }`}>
-                      {selectedUpiApp === 'paytm' && <div className="w-2 h-2 rounded-full bg-[#00BCD4]"></div>}
+                      {selectedUpiApp === 'paytm' && <div className="w-2 h-2 rounded-full bg-cyan-500"></div>}
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* 2. Credit & Debit Card Option */}
+{/* 2. Credit & Debit Card Option */}
             <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleAccordion('card')}
                 className="w-full px-6 py-5 flex items-center justify-between font-bold text-sm text-gray-900 cursor-pointer"
               >
                 <span className="flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-[#B00020]" />
+                  <CreditCard className="w-5 h-5 text-primary" />
                   Credit & Debit Card
                 </span>
                 {activeAccordion === 'card' ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
@@ -347,14 +347,14 @@ export default function PaymentCheckoutPage() {
               )}
             </div>
 
-            {/* 3. Net Banking Option */}
+{/* 3. Net Banking Option */}
             <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleAccordion('netbanking')}
                 className="w-full px-6 py-5 flex items-center justify-between font-bold text-sm text-gray-900 cursor-pointer"
               >
                 <span className="flex items-center gap-3">
-                  <ShieldCheck className="w-5 h-5 text-[#B00020]" />
+                  <ShieldCheck className="w-5 h-5 text-primary" />
                   Net Banking
                 </span>
                 {activeAccordion === 'netbanking' ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
@@ -368,14 +368,18 @@ export default function PaymentCheckoutPage() {
                         key={bank}
                         onClick={() => setSelectedBank(bank)}
                         className={`flex items-center gap-2.5 p-3.5 border rounded-xl cursor-pointer transition-all ${
-                          selectedBank === bank ? 'border-[#B00020] bg-gray-50/50' : 'border-gray-100 hover:border-gray-200'
+                          selectedBank === bank ? 'border-primary bg-gray-50/50' : 'border-gray-100 hover:border-gray-200'
                         }`}
                       >
                         <div className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                          selectedBank === bank ? 'border-[#00BCD4]' : 'border-gray-300'
+                          selectedBank === bank ? 'border-cyan-500' : 'border-gray-300'
                         }`}>
-                          {selectedBank === bank && <div className="w-1.5 h-1.5 rounded-full bg-[#00BCD4]"></div>}
+                          {selectedBank === bank && <div className="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>}
                         </div>
+                        <span className="text-xs font-bold text-gray-700 truncate">{bank}</span>
+                      </div>
+                    ))}
+                  </div>
                         <span className="text-xs font-bold text-gray-700 truncate">{bank}</span>
                       </div>
                     ))}
@@ -395,14 +399,14 @@ export default function PaymentCheckoutPage() {
               )}
             </div>
 
-            {/* 4. Cash On Delivery */}
+{/* 4. Cash On Delivery */}
             <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleAccordion('cod')}
                 className="w-full px-6 py-5 flex items-center justify-between font-bold text-sm text-gray-900 cursor-pointer"
               >
                 <span className="flex items-center gap-3">
-                  <DollarSign className="w-5 h-5 text-[#B00020]" />
+                  <DollarSign className="w-5 h-5 text-primary" />
                   Cash on Delivery
                 </span>
                 {activeAccordion === 'cod' ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
@@ -455,10 +459,10 @@ export default function PaymentCheckoutPage() {
               </div>
 
               {/* Place Order Button */}
-              <button
+              <Button
                 onClick={handlePlaceOrder}
                 disabled={isProcessing}
-                className="w-full bg-[#B00020] hover:bg-[#900010] text-white font-bold py-4 rounded-xl shadow-md shadow-[#B00020]/15 transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer disabled:bg-red-800 disabled:cursor-not-allowed"
+                className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-md shadow-primary/15 transition-all text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer disabled:bg-red-800 disabled:cursor-not-allowed"
               >
                 {isProcessing ? (
                   <>
@@ -498,9 +502,9 @@ export default function PaymentCheckoutPage() {
               <span className="text-sm font-bold text-gray-800 mt-1 block">{orderId}</span>
             </div>
 
-            <button
+            <Button
               onClick={handleSuccessClose}
-              className="w-full bg-[#B00020] hover:bg-[#900010] text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all cursor-pointer shadow-sm shadow-[#B00020]/10"
+              className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all cursor-pointer shadow-sm shadow-primary/10"
             >
               Back to Home
             </button>
