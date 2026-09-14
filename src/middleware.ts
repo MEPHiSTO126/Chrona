@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   // Read token from cookies (which will be set by our login logic)
   const token = request.cookies.get('access_token')?.value;
 
-  const protectedRoutes = ['/cart', '/checkout/address', '/checkout/payment'];
+  const protectedRoutes = ['/checkout/address', '/checkout/payment'];
   const isProtectedRoute = protectedRoutes.some((route) => 
     request.nextUrl.pathname.startsWith(route)
   );
@@ -21,5 +21,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/cart/:path*', '/checkout/:path*'],
+  matcher: ['/checkout/:path*'],
 };

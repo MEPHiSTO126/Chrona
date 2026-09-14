@@ -223,12 +223,86 @@ export const mockFashion: ProductCardProps[] = [
   },
 ];
 
+export const mockCosmetics: ProductCardProps[] = [
+  {
+    id: "cos1",
+    name: "L'Oreal Paris Revitalift Hyaluronic Acid Serum",
+    description: "Intense hydration serum for plump and radiant skin",
+    imageUrl: "/images/mock/home_appliance_1782386534658.png",
+    price: 999,
+    discountedPrice: 799,
+    rating: 4.6,
+    reviewCount: 540,
+    category: "cosmetics",
+  },
+  {
+    id: "cos2",
+    name: "Matte Velvet Liquid Lipstick Set",
+    description: "Long-lasting waterproof velvety lip colors",
+    imageUrl: "/images/mock/fashion_sneakers_1782386513542.png",
+    price: 1499,
+    discountedPrice: 1199,
+    rating: 4.7,
+    reviewCount: 310,
+    category: "cosmetics",
+  },
+  {
+    id: "cos3",
+    name: "Hydra Touch Radiance Day Cream SPF 30",
+    description: "Nourishing daily moisturizer with broad-spectrum sun defense",
+    imageUrl: "/images/mock/home_appliance_1782386534658.png",
+    price: 850,
+    discountedPrice: 650,
+    rating: 4.4,
+    reviewCount: 190,
+    category: "cosmetics",
+  },
+];
+
+export const mockGrocery: ProductCardProps[] = [
+  {
+    id: "gro1",
+    name: "Organic Raw Forest Honey 500g",
+    description: "100% pure unprocessed wild forest honey",
+    imageUrl: "/images/mock/home_appliance_1782386534658.png",
+    price: 600,
+    discountedPrice: 480,
+    rating: 4.8,
+    reviewCount: 420,
+    category: "grocery",
+  },
+  {
+    id: "gro2",
+    name: "Premium California Whole Almonds 1kg",
+    description: "Handpicked nutrient-rich crunchy almonds",
+    imageUrl: "/images/mock/electronics_gadget_1782386491755.png",
+    price: 1200,
+    discountedPrice: 950,
+    rating: 4.9,
+    reviewCount: 780,
+    category: "grocery",
+  },
+  {
+    id: "gro3",
+    name: "Cold-Pressed Extra Virgin Olive Oil 1L",
+    description: "Heart-healthy rich culinary oil imported from Mediterranean",
+    imageUrl: "/images/mock/home_appliance_1782386534658.png",
+    price: 1800,
+    discountedPrice: 1450,
+    rating: 4.7,
+    reviewCount: 260,
+    category: "grocery",
+  },
+];
+
 export const allMockProducts: ProductCardProps[] = [
   ...mockFlashSales,
   ...mockTrending,
   ...mockGadgets,
   ...mockAppliances,
   ...mockFashion,
+  ...mockCosmetics,
+  ...mockGrocery,
 ];
 
 export const heroBannerImage = "/images/mock/hero_banner_ecommerce_1782386469847.png";
@@ -344,8 +418,10 @@ export const mockProductDetail: ProductDetail = {
 
 export function getProductCategory(id: string): string {
   if (id.startsWith('fa') || id === 'f2' || id === 't1') return 'Fashion';
-  if (id.startsWith('g') || id === 'f1' || id === 'f4' || id === 't2') return 'Electronics';
+  if (id.startsWith('g1') || id.startsWith('g2') || id.startsWith('g3') || id.startsWith('g4') || id === 'f1' || id === 'f4' || id === 't2') return 'Electronics';
   if (id.startsWith('a') || id === 'f3' || id === 't3') return 'Home Appliances';
+  if (id.startsWith('cos')) return 'Cosmetics';
+  if (id.startsWith('gro')) return 'Grocery';
   return 'General';
 }
 

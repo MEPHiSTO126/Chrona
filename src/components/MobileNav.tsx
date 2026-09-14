@@ -25,8 +25,16 @@ export default function MobileNav() {
     setIsMounted(true);
   }, []);
 
-  // Hide on auth pages
-  if (pathname === '/login' || pathname === '/register') return null;
+  // Hide on auth pages, cart, checkout flows, and product detail pages where sticky action bars take precedence
+  if (
+    pathname === '/login' ||
+    pathname === '/register' ||
+    pathname === '/cart' ||
+    pathname.startsWith('/checkout') ||
+    pathname.startsWith('/product/')
+  ) {
+    return null;
+  }
 
   const items = NAV_ITEMS.map((item) => {
     if (item.href === '/login') {
