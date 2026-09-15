@@ -13,7 +13,7 @@ import { useState, useRef, useEffect } from 'react';
 
 export default function Header() {
   const router = useRouter();
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, logout } = useAuthStore();
   const cartItemsCount = useCartStore((state) => state.getTotalItems ? state.getTotalItems() : 0);
   const pathname = usePathname();
 
@@ -22,6 +22,7 @@ export default function Header() {
   const setLocation = useLocaleStore((state) => state.setLocation);
 
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [tempLocation, setTempLocation] = useState(location);
   const [isDetecting, setIsDetecting] = useState(false);
@@ -29,6 +30,7 @@ export default function Header() {
   const [isMounted, setIsMounted] = useState(false);
 
   const langDropdownRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const searchDebounceRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -46,6 +48,9 @@ export default function Header() {
     function handleClickOutside(event: MouseEvent) {
       if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
         setIsLangDropdownOpen(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -171,11 +176,56 @@ export default function Header() {
 
           {/* Auth — desktop */}
           {isAuthenticated ? (
-            <div className="hidden sm:flex items-center gap-2 cursor-pointer border border-gray-300 p-1 rounded-md">
-              {user?.avatar
-                ? <Image src={user.avatar} alt={user.name || 'User'} width={28} height={28} className="w-7 h-7 object-cover rounded-full" />
-                : <User className="w-4 h-4 text-gray-500" />}
-              <span className="text-xs font-bold text-gray-800 hidden lg:block">{user?.name || t("My Account")}</span>
+            <div className="relative hidden sm:block" ref={userMenuRef}>
+              <div 
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className="flex items-center gap-2 cursor-pointer border border-gray-200 hover:border-primary/50 p-1.5 rounded-lg transition-colors select-none"
+              >
+                {user?.avatar
+                  ? <Image src={user.avatar} alt={user.name || 'User'} width={28} height={28} className="w-7 h-7 object-cover rounded-full" />
+                  : <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs"><User className="w-4 h-4" /></div>}
+                <span className="text-xs font-bold text-gray-800 hidden lg:block">{user?.name || t("My Account")}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+              </div>
+
+              {isUserMenuOpen && (
+                <div className="absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded-xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-4 py-2 border-b border-gray-100">
+                    <p className="text-xs font-bold text-gray-900 truncate">{user?.name || "User"}</p>
+                    <p className="text-[11px] text-gray-400 truncate">{user?.email || ""}</p>
+                  </div>
+                  <div className="py-1">
+                    <Link
+                      href="/account"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      <User className="w-3.5 h-3.5" />
+                      {t("My Account & Orders")}
+                    </Link>
+                    <Link
+                      href="/checkout/address"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      <MapPin className="w-3.5 h-3.5" />
+                      {t("Saved Addresses")}
+                    </Link>
+                  </div>
+                  <div className="border-t border-gray-100 pt-1">
+                    <button
+                      onClick={() => {
+                        setIsUserMenuOpen(false);
+                        logout();
+                        router.push('/');
+                      }}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 transition-colors text-left cursor-pointer"
+                    >
+                      {t("Log Out")}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <Link href="/login" className="hidden sm:block bg-primary text-white text-xs font-bold px-4 py-2 rounded-md hover:bg-primary-dark transition-colors shadow-sm whitespace-nowrap">
@@ -200,12 +250,10 @@ export default function Header() {
             )}
           </Link>
 
-          {/* Mobile Login icon */}
-          {!isAuthenticated && (
-            <Link href="/login" className="flex sm:hidden items-center justify-center text-gray-700">
-              <User className="w-5 h-5" />
-            </Link>
-          )}
+          {/* Mobile Login/Account icon */}
+          <Link href={isAuthenticated ? "/account" : "/login"} className="flex sm:hidden items-center justify-center text-gray-700">
+            <User className="w-5 h-5" />
+          </Link>
         </div>
       </div>
 
@@ -218,13 +266,15 @@ export default function Header() {
           <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
           <span className="truncate max-w-[140px] font-medium">{location}</span>
         </button>
-        {!isAuthenticated && (
+        {!isAuthenticated ? (
           <Link href="/login" className="shrink-0 text-xs font-bold text-primary border border-primary px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-all">
             {t("Login")} / {t("Sign Up")}
           </Link>
-        )}
-        {isAuthenticated && user && (
-          <span className="shrink-0 text-xs font-bold text-gray-700 truncate max-w-[100px]">👋 {user.name?.split(' ')[0]}</span>
+        ) : (
+          <Link href="/account" className="shrink-0 text-xs font-bold text-gray-700 hover:text-primary flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5 text-primary" />
+            <span>{user?.name?.split(' ')[0] || "Account"}</span>
+          </Link>
         )}
       </div>
 

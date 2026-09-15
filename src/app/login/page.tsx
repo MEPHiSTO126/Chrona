@@ -66,22 +66,22 @@ const Login = () => {
         />
 
         {error && (
-          <p className="text-xs text-red-400 font-medium bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+          <p className="text-xs text-red-700 font-medium bg-red-50 border border-red-200 rounded-md px-3 py-2">
             {error}
           </p>
         )}
 
         <div className="flex items-center justify-between text-xs">
-          <label className="flex items-center gap-2 cursor-pointer text-white/50 hover:text-white/80 transition-colors">
+          <label className="flex items-center gap-2 cursor-pointer text-gray-600 hover:text-gray-900 transition-colors">
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-3.5 h-3.5 rounded accent-primary"
+              className="w-4 h-4 rounded accent-primary text-primary"
             />
             Remember me
           </label>
-          <Link href="/forgot-password" className="text-primary hover:text-orange-400 transition-colors font-semibold">
+          <Link href="/forgot-password" className="text-primary hover:text-primary-dark transition-colors font-semibold">
             Forgot password?
           </Link>
         </div>
@@ -89,7 +89,7 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-primary to-orange-500 hover:from-primary-dark hover:to-orange-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2 disabled:opacity-70 mt-2"
+          className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-2.5 rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-70 mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
           {loading ? "Signing in..." : "Sign In"}

@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 import { Headset } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
@@ -21,18 +22,21 @@ export default function TopBar() {
 
         {/* Links on the right */}
         <div className="flex items-center gap-4 sm:gap-6 ml-auto sm:ml-0">
-          <a
+          <Link
             href="/seller-registration"
             className="hover:text-white/80 transition-opacity hidden sm:block"
           >
             {t("Seller Registration")}
-          </a>
+          </Link>
 
-          <div className="flex items-center gap-1.5 hover:text-white/80 transition-opacity cursor-pointer">
+          <Link 
+            href="/contact"
+            className="flex items-center gap-1.5 hover:text-white/80 transition-opacity"
+          >
             <Headset className="w-4 h-4 shrink-0" />
             <span className="hidden xs:block sm:block">{t("24X7 Customer Support")}</span>
             <span className="block sm:hidden text-[11px] font-semibold">Support</span>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

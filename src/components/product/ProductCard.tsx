@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { Flame } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 import { useTranslation } from '@/hooks/useTranslation';
+import { formatPrice } from '@/lib/format';
 
 export interface ProductCardProps {
   id: string;
@@ -48,16 +50,16 @@ export default function ProductCard({
   const { t } = useTranslation();
   const hasDiscount = discountedPrice !== undefined && discountedPrice < price;
   const discountPercent = hasDiscount ? Math.round(((price - discountedPrice) / price) * 100) : 0;
-  const formatPrice = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
 
   return (
-    <div className={`bg-white rounded-xl border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300 flex flex-col ${className}`}>
+    <div className={`bg-white rounded-xl border border-gray-200 overflow-hidden group hover:border-gray-300 hover:shadow-sm transition-all duration-200 flex flex-col ${className}`}>
 
       {/* Deal Label + Countdown — stacked vertically to prevent overflow */}
       {showDealLabel && (
-        <div className="flex flex-col gap-1 px-2.5 pt-2.5 pb-1">
-          <span className="text-primary text-[10px] sm:text-xs font-bold uppercase tracking-wide">
-            🔥 {t("Deal of the Day")}
+        <div className="flex flex-col gap-1 px-3 pt-3 pb-1">
+          <span className="text-primary text-[10px] sm:text-xs font-bold uppercase tracking-wide flex items-center gap-1">
+            <Flame className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span>{t("Deal of the Day")}</span>
           </span>
           {saleEndTime && (
             <CountdownTimer targetDate={saleEndTime} variant="compact" className="text-[10px]" />

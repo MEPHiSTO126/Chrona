@@ -29,11 +29,11 @@ export default function AdvertisePage() {
           <li>{t("High intent audience - people actively shopping")}</li>
           <li>{t("Detailed targeting by category, demographics, behavior")}</li>
           <li>{t("Transparent reporting and analytics")}</li>
-          <li>{t("Flexible budgets - start from ₹5,000/day")}</li>
+          <li>{t("Flexible budgets - start from ₦50,000/day")}</li>
         </ul>
         <h3 className="text-xl font-bold text-gray-900 mb-3 mt-6">{t("Get Started")}</h3>
         <p className="text-gray-600 leading-relaxed mb-4">
-          {t("Contact our advertising team at advertising@chrona.com or call +91 1800-123-4567 (option 3).")}
+          {t("Contact our advertising team at advertising@chrona.com or call +234 800-247-662 (option 3).")}
         </p>
       </div>
     </div>

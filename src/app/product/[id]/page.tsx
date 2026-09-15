@@ -23,6 +23,7 @@ import {
 import { useCartStore } from '@/store/useCartStore';
 import { mockProductDetail, allMockProducts, ProductDetail, getProductCategory } from '@/lib/mockData';
 import ProductImageGallery from '@/components/product/ProductImageGallery';
+import { formatPrice } from '@/lib/format';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface PageProps {
@@ -43,23 +44,29 @@ export default function ProductDetailsPage({ params }: PageProps) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [reviewsHelpful, setReviewsHelpful] = useState<Record<string, number>>({});
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   const addItem = useCartStore((state) => state.addItem);
 
   useEffect(() => {
+    setIsLoading(true);
+    setNotFound(false);
+
     if (id === 'f1') {
       setProduct(mockProductDetail);
       if (mockProductDetail.colors?.length > 0) {
         setSelectedColor(mockProductDetail.colors[0]);
       }
+      setIsLoading(false);
     } else {
       const baseProduct = allMockProducts.find((p) => p.id === id);
       if (baseProduct) {
         const detailProduct: ProductDetail = {
           id: baseProduct.id,
           name: baseProduct.name,
-          brand: 'Brand',
-          company: 'Chrona Partner',
+          brand: 'Chrona',
+          company: 'Chrona Certified Partner',
           model: baseProduct.name.split(' ')[0],
           dateOfManufacture: '12.12.2024',
           images: [baseProduct.imageUrl, baseProduct.imageUrl, baseProduct.imageUrl],
@@ -69,46 +76,73 @@ export default function ProductDetailsPage({ params }: PageProps) {
           reviewCount: baseProduct.reviewCount || 10,
           inStock: true,
           colors: ['#1a1a1a', '#9ca3af'],
-          description: baseProduct.description || 'No description available for this premium product.',
-          highlightedTags: ['Premium', 'Genuine'],
+          description: baseProduct.description || 'Experience cutting-edge craftsmanship and unmatched performance with this genuine Chrona product.',
+          highlightedTags: ['Premium', 'Verified'],
           seller: {
-            name: 'The Better Store',
-            rating: 4.5,
+            name: 'Chrona Direct',
+            rating: 4.8,
             deliveryDays: 3,
-            offer: '100% manufacturer warranty on this brand.',
+            offer: '100% manufacturer warranty included.',
           },
           ratingBreakdown: [
-            { stars: 5, count: 5 },
-            { stars: 4, count: 3 },
+            { stars: 5, count: 8 },
+            { stars: 4, count: 4 },
             { stars: 3, count: 1 },
-            { stars: 2, count: 1 },
+            { stars: 2, count: 0 },
             { stars: 1, count: 0 },
           ],
           reviews: [
             {
               id: 'rev-1',
-              author: 'Customer',
+              author: 'Verified Buyer',
               rating: 5,
-              title: 'Excellent product!',
-              body: 'I am really satisfied with the product build quality and performance. Worth the money!',
-              date: 'Reviewed on 12 June 2024',
-              helpful: 4,
+              title: 'Outstanding quality and fast delivery',
+              body: 'Exceeded all my expectations. The finish is premium and the item arrived safely packaged.',
+              date: 'Reviewed recently',
+              helpful: 5,
             }
           ]
         };
         setProduct(detailProduct);
         setSelectedColor(detailProduct.colors[0]);
+        setIsLoading(false);
       } else {
-        setProduct(mockProductDetail);
-        setSelectedColor(mockProductDetail.colors[0]);
+        setProduct(null);
+        setNotFound(true);
+        setIsLoading(false);
       }
     }
   }, [id]);
 
-  if (!product) {
+  if (notFound) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-[70vh] flex flex-col items-center justify-center bg-gray-50 px-4 text-center">
+        <h1 className="text-2xl sm:text-3xl font-bold font-syne text-gray-900 mb-2">{t("Product Not Found")}</h1>
+        <p className="text-gray-500 text-sm max-w-md mb-6">{t("The item you are looking for might have been removed or does not exist.")}</p>
+        <Link
+          href="/"
+          className="bg-primary hover:bg-primary-dark text-white font-bold py-2.5 px-6 rounded-full text-sm transition-colors"
+        >
+          {t("Continue Shopping")}
+        </Link>
+      </div>
+    );
+  }
+
+  if (isLoading || !product) {
+    return (
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-1/4 mb-6"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-5 h-[400px] bg-gray-200 rounded-2xl"></div>
+          <div className="lg:col-span-7 space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+            <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-24 bg-gray-200 rounded w-full"></div>
+            <div className="h-12 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -159,10 +193,6 @@ export default function ProductDetailsPage({ params }: PageProps) {
     }
   };
 
-  const formatPrice = (amount: number) => {
-    return `₹${amount.toLocaleString('en-IN')}`;
-  };
-
   const hasDiscount = product.discountedPrice !== undefined && product.discountedPrice < product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.price - (product.discountedPrice ?? 0)) / product.price) * 100)
@@ -177,7 +207,7 @@ export default function ProductDetailsPage({ params }: PageProps) {
         <div className="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap">
           <Link href="/" className="hover:text-primary transition-colors">{t("Home")}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <Link href="/category/electronics" className="hover:text-primary transition-colors">{t("Electronics")}</Link>
+          <Link href={`/category/${getProductCategory(product.id).toLowerCase()}`} className="hover:text-primary transition-colors">{t(getProductCategory(product.id))}</Link>
           <ChevronRight className="w-3.5 h-3.5" />
           <span className="text-gray-900 font-medium truncate max-w-[200px] sm:max-w-none">{t(product.name)}</span>
         </div>

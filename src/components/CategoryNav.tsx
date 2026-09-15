@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Shirt, Sparkles, Smartphone, Heart, ShoppingBag } from 'lucide-react';
 
 const CATEGORIES = [
-  { name: 'Man', href: '/category/man', emoji: '👔' },
-  { name: 'Woman', href: '/category/woman', emoji: '👗' },
-  { name: 'Electronic', href: '/category/electronic', emoji: '📱' },
-  { name: 'Cosmetics', href: '/category/cosmetics', emoji: '💄' },
-  { name: 'Grocery', href: '/category/grocery', emoji: '🛒' },
+  { name: 'Man', href: '/category/man', icon: Shirt },
+  { name: 'Woman', href: '/category/woman', icon: Sparkles },
+  { name: 'Electronic', href: '/category/electronic', icon: Smartphone },
+  { name: 'Cosmetics', href: '/category/cosmetics', icon: Heart },
+  { name: 'Grocery', href: '/category/grocery', icon: ShoppingBag },
 ];
 
 export default function CategoryNav() {
@@ -23,20 +24,21 @@ export default function CategoryNav() {
   return (
     <nav className="w-full bg-background border-b border-gray-200">
       {/* Mobile: horizontal scroll pills */}
-      <div className="flex md:hidden overflow-x-auto scrollbar-hide gap-2 px-4 py-2.5 snap-x snap-mandatory">
+      <div className="flex md:hidden overflow-x-auto scrollbar-hide gap-2 px-4 py-2 snap-x snap-mandatory items-center">
         {CATEGORIES.map((cat) => {
           const isActive = pathname === cat.href;
+          const IconComponent = cat.icon;
           return (
             <Link
               key={cat.name}
               href={cat.href}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap snap-start shrink-0 transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 min-h-[44px] rounded-full text-xs font-semibold whitespace-nowrap snap-start shrink-0 transition-colors ${
                 isActive
                   ? 'bg-primary text-white shadow-sm'
                   : 'bg-gray-100 text-gray-700 hover:bg-primary/10 hover:text-primary'
               }`}
             >
-              <span>{cat.emoji}</span>
+              <IconComponent className="w-3.5 h-3.5 shrink-0" />
               <span>{t(cat.name)}</span>
             </Link>
           );

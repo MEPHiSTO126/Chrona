@@ -31,8 +31,10 @@ export default function CountdownTimer({
   };
 
   const [timeLeft, setTimeLeft] = useState(() => calculateTime(targetDate));
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const expired = calculateTime(targetDate).isExpired;
     if (expired) {
       if (onExpire) onExpire();
@@ -48,6 +50,14 @@ export default function CountdownTimer({
     }, 1000);
     return () => clearInterval(interval);
   }, [targetDate, onExpire]);
+
+  if (!isMounted) {
+    return (
+      <div className={`inline-flex items-center gap-1 text-gray-400 text-xs font-medium ${className}`}>
+        <span className="tabular-nums">--:--:--</span>
+      </div>
+    );
+  }
 
 
 
