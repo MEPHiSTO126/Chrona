@@ -233,45 +233,7 @@
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ── Auth page floating orbs ─────────────────────────────── */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.4;
-  animation: orbFloat 8s ease-in-out infinite;
-}
-.orb-1 {
-  width: 350px; height: 350px;
-  background: radial-gradient(circle, #EA580C 0%, transparent 70%);
-  top: -10%; left: -10%;
-  animation-delay: 0s; animation-duration: 10s;
-}
-.orb-2 {
-  width: 280px; height: 280px;
-  background: radial-gradient(circle, #1B6B93 0%, transparent 70%);
-  bottom: -5%; right: -5%;
-  animation-delay: -3s; animation-duration: 12s;
-}
-.orb-3 {
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
-  top: 40%; right: 10%;
-  animation-delay: -6s; animation-duration: 9s;
-}
-.orb-4 {
-  width: 160px; height: 160px;
-  background: radial-gradient(circle, #8b5cf6 0%, transparent 70%);
-  bottom: 25%; left: 5%;
-  animation-delay: -2s; animation-duration: 14s;
-}
 
-@keyframes orbFloat {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(30px, -40px) scale(1.08); }
-  66%  { transform: translate(-20px, 20px) scale(0.95); }
-  100% { transform: translate(0, 0) scale(1); }
-}
 
 /* Mobile nav safe area (for notched phones) */
 .pb-safe { padding-bottom: max(0.375rem, env(safe-area-inset-bottom)); }

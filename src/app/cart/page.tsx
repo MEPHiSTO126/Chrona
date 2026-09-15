@@ -12,11 +12,13 @@ import {
   ChevronDown,
   ArrowRight,
   ShoppingBag,
-  Package
+  Package,
+  Check
 } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format';
 
 export default function CartPage() {
   const router = useRouter();
@@ -61,10 +63,8 @@ export default function CartPage() {
   };
 
   const subtotal = getSubtotal();
-  const gst = Math.round(subtotal * 0.18);
-  const total = subtotal + gst - discount;
-
-  const formatPrice = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
+  const vat = Math.round(subtotal * 0.075);
+  const total = subtotal + vat - discount;
 
   if (items.length === 0) {
     return (
@@ -220,8 +220,8 @@ export default function CartPage() {
                   <span className="text-gray-900 font-bold">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>GST (18%)</span>
-                  <span className="text-gray-900 font-bold">{formatPrice(gst)}</span>
+                  <span>VAT (7.5%)</span>
+                  <span className="text-gray-900 font-bold">{formatPrice(vat)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t("Shipping")}</span>
@@ -252,7 +252,9 @@ export default function CartPage() {
                     className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-xs outline-none focus:border-primary uppercase font-bold disabled:bg-gray-50 disabled:text-gray-400"
                   />
                   {couponApplied && (
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-emerald-600">✓ {t("Applied")}</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-emerald-600 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> {t("Applied")}
+                    </span>
                   )}
                 </div>
                 {!couponApplied ? (

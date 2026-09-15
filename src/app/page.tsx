@@ -81,18 +81,17 @@ export default function Home() {
         </section>
 
         {/* Promotional Music Banner */}
-        <section className="relative w-full h-[140px] sm:h-[260px] rounded-xl sm:rounded-2xl overflow-hidden shadow-sm bg-gray-900 flex items-center px-6 sm:px-16">
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-purple-900/40 z-0"></div>
+        <section className="relative w-full h-[140px] sm:h-[260px] rounded-xl overflow-hidden bg-zinc-950 border border-zinc-800 flex items-center px-6 sm:px-16">
           <div className="relative z-10">
-            <span className="text-primary-light font-medium tracking-wider text-[10px] sm:text-sm uppercase mb-1 sm:mb-2 block">
+            <span className="text-primary-light font-semibold tracking-wider text-[10px] sm:text-sm uppercase mb-1 sm:mb-2 block">
               {t("Enhance Your Audio")}
             </span>
-            <h2 className="text-xl sm:text-5xl font-bold text-white mb-3 sm:mb-6">
+            <h2 className="text-xl sm:text-4xl md:text-5xl font-bold text-white font-syne mb-3 sm:mb-6">
               {t("JBL Music Experience")}
             </h2>
             <Link
               href="/category/electronics"
-              className="bg-white hover:bg-gray-100 text-gray-900 font-bold py-2 px-4 sm:px-6 rounded-full transition-colors text-xs sm:text-sm"
+              className="bg-white hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 sm:px-6 rounded-md transition-colors text-xs sm:text-sm"
             >
               {t("Buy Now")}
             </Link>

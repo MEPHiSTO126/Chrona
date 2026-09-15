@@ -18,6 +18,7 @@ import {
 import { useCartStore } from '@/store/useCartStore';
 import { useAddressStore, Address } from '@/store/useAddressStore';
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format';
 
 export default function AddressCheckoutPage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function AddressCheckoutPage() {
     landmark: '',
     postcode: '',
     city: '',
-    country: 'India',
+    country: 'Nigeria',
     state: '',
     phone: '',
   });
@@ -45,12 +46,8 @@ export default function AddressCheckoutPage() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const subtotal = getSubtotal();
-  const gst = Math.round(subtotal * 0.18);
-  const total = subtotal + gst;
-
-  const formatPrice = (amount: number) => {
-    return `₹${amount.toLocaleString('en-IN')}`;
-  };
+  const vat = Math.round(subtotal * 0.075);
+  const total = subtotal + vat;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -71,8 +68,8 @@ export default function AddressCheckoutPage() {
     }
     if (!formData.city.trim()) errors.city = 'Required';
     if (!formData.state) errors.state = 'Required';
-    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone)) {
-      errors.phone = 'Must be 10 digits';
+    if (!formData.phone.trim() || !/^\d{10,11}$/.test(formData.phone)) {
+      errors.phone = 'Enter a valid phone number';
     }
 
     setFormErrors(errors);
@@ -272,7 +269,7 @@ export default function AddressCheckoutPage() {
                     landmark: '',
                     postcode: '',
                     city: '',
-                    country: 'India',
+                    country: 'Nigeria',
                     state: '',
                     phone: '',
                   });
@@ -292,7 +289,7 @@ export default function AddressCheckoutPage() {
 
           {/* RIGHT COLUMN: Billing Details */}
           <div className="lg:col-span-4 flex flex-col gap-5">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col gap-5 shadow-sm">
+            <div className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col gap-5 shadow-sm">
               <h2 className="text-sm font-bold tracking-wider text-gray-900 uppercase border-b border-gray-100 pb-3">
                 BILLING DETAILS
               </h2>
@@ -303,8 +300,8 @@ export default function AddressCheckoutPage() {
                   <span className="text-gray-900 font-bold">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>GST (18%)</span>
-                  <span className="text-gray-900 font-bold">{formatPrice(gst)}</span>
+                  <span>VAT (7.5%)</span>
+                  <span className="text-gray-900 font-bold">{formatPrice(vat)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping Charges</span>
@@ -513,8 +510,7 @@ export default function AddressCheckoutPage() {
                   onChange={handleInputChange}
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-semibold outline-none focus:border-primary transition-all bg-white"
                 >
-                  <option value="India">India</option>
-                  <option value="United States">United States</option>
+                  <option value="Nigeria">Nigeria</option>
                 </select>
                 <div className="flex flex-col gap-1.5">
                   <select
@@ -526,12 +522,16 @@ export default function AddressCheckoutPage() {
                     }`}
                   >
                     <option value="">Select State *</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Tamil Nadu">Tamil Nadu</option>
-                    <option value="Gujarat">Gujarat</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Lagos">Lagos</option>
+                    <option value="Abuja">Abuja (FCT)</option>
+                    <option value="Rivers">Rivers</option>
+                    <option value="Oyo">Oyo</option>
+                    <option value="Kano">Kano</option>
+                    <option value="Ogun">Ogun</option>
+                    <option value="Enugu">Enugu</option>
+                    <option value="Delta">Delta</option>
+                    <option value="Kaduna">Kaduna</option>
+                    <option value="Edo">Edo</option>
                   </select>
                   {formErrors.state && <span className="text-[10px] text-red-500 font-bold pl-1">{formErrors.state}</span>}
                 </div>
@@ -541,12 +541,12 @@ export default function AddressCheckoutPage() {
               <div className="flex flex-col gap-1.5">
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-500">
-                    +91
+                    +234
                   </span>
                   <input
                     type="text"
                     name="phone"
-                    maxLength={10}
+                    maxLength={11}
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="Phone Number *"

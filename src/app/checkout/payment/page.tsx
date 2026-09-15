@@ -20,6 +20,7 @@ import {
 import { useCartStore } from '@/store/useCartStore';
 import { useAddressStore } from '@/store/useAddressStore';
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format';
 
 type PaymentMethodType = 'upi' | 'card' | 'netbanking' | 'cod';
 
@@ -55,12 +56,8 @@ export default function PaymentCheckoutPage() {
   }, [items, router, isSuccessModalOpen]);
 
   const subtotal = getSubtotal();
-  const gst = Math.round(subtotal * 0.18);
-  const total = subtotal + gst;
-
-  const formatPrice = (amount: number) => {
-    return `₹${amount.toLocaleString('en-IN')}`;
-  };
+  const vat = Math.round(subtotal * 0.075);
+  const total = subtotal + vat;
 
   const handleCardInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
@@ -437,8 +434,8 @@ export default function PaymentCheckoutPage() {
                   <span className="text-gray-900 font-bold">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>GST (18%)</span>
-                  <span className="text-gray-900 font-bold">{formatPrice(gst)}</span>
+                  <span>VAT (7.5%)</span>
+                  <span className="text-gray-900 font-bold">{formatPrice(vat)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping Charges</span>

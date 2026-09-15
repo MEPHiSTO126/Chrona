@@ -271,8 +271,9 @@ export default function Header() {
             {t("Login")} / {t("Sign Up")}
           </Link>
         ) : (
-          <Link href="/account" className="shrink-0 text-xs font-bold text-gray-700 hover:text-primary flex items-center gap-1">
-            <span>👋 {user?.name?.split(' ')[0] || "Account"}</span>
+          <Link href="/account" className="shrink-0 text-xs font-bold text-gray-700 hover:text-primary flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5 text-primary" />
+            <span>{user?.name?.split(' ')[0] || "Account"}</span>
           </Link>
         )}
       </div>

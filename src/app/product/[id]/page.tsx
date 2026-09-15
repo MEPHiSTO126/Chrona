@@ -23,6 +23,7 @@ import {
 import { useCartStore } from '@/store/useCartStore';
 import { mockProductDetail, allMockProducts, ProductDetail, getProductCategory } from '@/lib/mockData';
 import ProductImageGallery from '@/components/product/ProductImageGallery';
+import { formatPrice } from '@/lib/format';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface PageProps {
@@ -190,10 +191,6 @@ export default function ProductDetailsPage({ params }: PageProps) {
       }));
       setLikedReviews(prev => ({ ...prev, [reviewId]: true }));
     }
-  };
-
-  const formatPrice = (amount: number) => {
-    return `₹${amount.toLocaleString('en-IN')}`;
   };
 
   const hasDiscount = product.discountedPrice !== undefined && product.discountedPrice < product.price;
